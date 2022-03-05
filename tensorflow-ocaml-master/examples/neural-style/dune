@@ -1,3 +1,0 @@
-(executables
-  (names neural_style vgg19)
-  (libraries cmdliner npy stb_image stb_image_write tensorflow tensorflow.fnn))

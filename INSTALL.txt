@@ -1,0 +1,20 @@
+0) #update ubuntu#
+sudo apt update
+sudo apt upgrade
+
+1) #install required packages#
+sudo apt install pkg-config libffi-dev zlib1g-dev
+
+
+
+2) #install ocaml pytorch#
+opam install torch
+
+
+## maybe not step 3
+3) #install conda and CUDA#
+cd ~
+wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh
+chmod +x Anaconda3-2020.11-Linux-x86_64.sh
+./Anaconda3-2020.11-Linux-x86_64.sh
+conda install -c fastai -c pytorch -c anaconda fastai gh anaconda

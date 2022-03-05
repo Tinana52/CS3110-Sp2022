@@ -1,6 +1,0 @@
-(executable
- (name utop_tensorflow)
- (link_flags (-linkall))
- (modules utop_tensorflow)
- (modes byte)
- (libraries tensorflow.core tensorflow utop))
