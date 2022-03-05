@@ -1,0 +1,4 @@
+(library
+ (name project)
+ (public_name Project)
+ (libraries ANSITerminal tensorflow))
