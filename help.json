@@ -1,5 +1,5 @@
 {
-  "flags ": [
+  "flags": [
     {
       "flag": "style_weight",
       "arg_type": "int",
