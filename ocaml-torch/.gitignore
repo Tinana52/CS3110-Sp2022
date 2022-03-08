@@ -10,9 +10,10 @@ __pycache__
 *.cmxa
 *.swp
 *.ipynb_checkpoints
+*.ot
 
 # ocamlbuild working directory
-_build/
+#_build/
 
 # dataset directory
 data/

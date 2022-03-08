@@ -20,6 +20,8 @@ ALL = examples/basics/basics.exe \
       examples/translation/seq2seq.exe \
       bin/tensor_tools.exe
 
+NST = examples/neural_transfer/neural_transfer.exe 
+
 RL = examples/reinforcement-learning/dqn.exe \
      examples/reinforcement-learning/dqn_atari.exe \
      examples/reinforcement-learning/dqn_pong.exe \
@@ -32,6 +34,9 @@ RL = examples/reinforcement-learning/dqn.exe \
 
 all: .FORCE
 	dune build $(ALL)
+
+nst: .FORCE
+	dune build $(NST)      
 
 rl: .FORCE
 	dune build $(RL)
