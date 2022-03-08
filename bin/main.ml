@@ -24,31 +24,31 @@ let rec start () =
   | "quit" -> ()
   | "help" ->
       print_list Fun.id all_flags;
-      print_string ">";
+      print_string "> ";
       start ()
   | "make" -> (
       try make () with
       | Invalid_Flag f ->
           print_endline ("Invalid flag: " ^ f);
-          print_string ">";
+          print_string "> ";
           start ()
       | TypeMismatch ->
           print_endline "Incorrect arguent type. ";
-          print_string ">";
+          print_string "> ";
           start ())
   | cmd when String.sub cmd 0 4 = "help" -> (
       try
         print_endline
           (flag_info (String.sub cmd 5 (String.length cmd - 5)));
-        print_string ">";
+        print_string "> ";
         start ()
       with Invalid_Flag f ->
         print_endline ("Invalid flag: " ^ f);
-        print_string ">";
+        print_string "> ";
         start ())
   | _ ->
       print_endline "Invalid command. ";
-      print_string ">";
+      print_string "> ";
       start ()
 
 let main () =
