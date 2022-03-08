@@ -1,0 +1,1 @@
+("-D_GLIBCXX_USE_CXX11_ABI=1" "-isystem" "/home/canal/.opam/torch/lib/libtorch/include" "-isystem" "/home/canal/.opam/torch/lib/libtorch/include/torch/csrc/api/include")

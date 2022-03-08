@@ -1,0 +1,1 @@
+("-Wl,--no-as-needed" "-Wl,-rpath,/home/canal/.opam/torch/lib/libtorch/lib" "-L/home/canal/.opam/torch/lib/libtorch/lib" "-lc10" "-ltorch_cpu" "-ltorch" "-Wl,-rpath,/usr/local/cuda/lib64" "-L/usr/local/cuda/lib64" "-lcudart" "-lnvrtc")

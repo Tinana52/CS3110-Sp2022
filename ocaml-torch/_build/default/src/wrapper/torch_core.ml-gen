@@ -1,0 +1,34 @@
+(** @canonical Torch_core.Device *)
+module Device = Torch_core__Device
+
+
+(** @canonical Torch_core.Kind *)
+module Kind = Torch_core__Kind
+
+
+(** @canonical Torch_core.Reduction *)
+module Reduction = Torch_core__Reduction
+
+
+(** @canonical Torch_core.Torch_bindings *)
+module Torch_bindings = Torch_core__Torch_bindings
+
+
+(** @canonical Torch_core.Torch_bindings_generated *)
+module Torch_bindings_generated = Torch_core__Torch_bindings_generated
+
+
+(** @canonical Torch_core.Torch_generated *)
+module Torch_generated = Torch_core__Torch_generated
+
+
+(** @canonical Torch_core.Wrapper *)
+module Wrapper = Torch_core__Wrapper
+
+
+(** @canonical Torch_core.Wrapper_generated *)
+module Wrapper_generated = Torch_core__Wrapper_generated
+
+
+(** @canonical Torch_core.Wrapper_generated_intf *)
+module Wrapper_generated_intf = Torch_core__Wrapper_generated_intf

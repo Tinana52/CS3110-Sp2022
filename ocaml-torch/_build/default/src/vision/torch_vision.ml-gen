@@ -1,0 +1,46 @@
+(** @canonical Torch_vision.Alexnet *)
+module Alexnet = Torch_vision__Alexnet
+
+
+(** @canonical Torch_vision.Densenet *)
+module Densenet = Torch_vision__Densenet
+
+
+(** @canonical Torch_vision.Efficientnet *)
+module Efficientnet = Torch_vision__Efficientnet
+
+
+(** @canonical Torch_vision.Image *)
+module Image = Torch_vision__Image
+
+
+(** @canonical Torch_vision.Imagenet *)
+module Imagenet = Torch_vision__Imagenet
+
+
+(** @canonical Torch_vision.Inception *)
+module Inception = Torch_vision__Inception
+
+
+(** @canonical Torch_vision.Mobilenet *)
+module Mobilenet = Torch_vision__Mobilenet
+
+
+(** @canonical Torch_vision.Resnet *)
+module Resnet = Torch_vision__Resnet
+
+
+(** @canonical Torch_vision.Squeezenet *)
+module Squeezenet = Torch_vision__Squeezenet
+
+
+(** @canonical Torch_vision.Stb_image *)
+module Stb_image = Torch_vision__Stb_image
+
+
+(** @canonical Torch_vision.Stb_image_write *)
+module Stb_image_write = Torch_vision__Stb_image_write
+
+
+(** @canonical Torch_vision.Vgg *)
+module Vgg = Torch_vision__Vgg

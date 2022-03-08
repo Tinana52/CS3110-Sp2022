@@ -1,0 +1,62 @@
+(** @canonical Torch.Checkpointing *)
+module Checkpointing = Torch__Checkpointing
+
+
+(** @canonical Torch.Cifar_helper *)
+module Cifar_helper = Torch__Cifar_helper
+
+
+(** @canonical Torch.Cuda *)
+module Cuda = Torch__Cuda
+
+
+(** @canonical Torch.Dataset_helper *)
+module Dataset_helper = Torch__Dataset_helper
+
+
+(** @canonical Torch.Device *)
+module Device = Torch__Device
+
+
+(** @canonical Torch.Ivalue *)
+module Ivalue = Torch__Ivalue
+
+
+(** @canonical Torch.Layer *)
+module Layer = Torch__Layer
+
+
+(** @canonical Torch.Mnist_helper *)
+module Mnist_helper = Torch__Mnist_helper
+
+
+(** @canonical Torch.Module *)
+module Module = Torch__Module
+
+
+(** @canonical Torch.Optimizer *)
+module Optimizer = Torch__Optimizer
+
+
+(** @canonical Torch.Rnn_intf *)
+module Rnn_intf = Torch__Rnn_intf
+
+
+(** @canonical Torch.Scalar *)
+module Scalar = Torch__Scalar
+
+
+(** @canonical Torch.Serialize *)
+module Serialize = Torch__Serialize
+
+
+(** @canonical Torch.Tensor *)
+module Tensor = Torch__Tensor
+
+
+(** @canonical Torch.Text_helper *)
+module Text_helper = Torch__Text_helper
+
+
+(** @canonical Torch.Var_store *)
+module Var_store = Torch__Var_store
