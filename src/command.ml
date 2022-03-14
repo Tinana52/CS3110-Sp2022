@@ -37,14 +37,21 @@ let flags_from_json t =
           |>
           if arg = "int" then fun x -> Int (to_int x)
           else if arg = "float" then fun x -> Float (to_float x)
+          else if arg = "string" then fun x -> String (to_string x)
           else if arg = "int list" then fun x ->
             IntList (List.map to_int (to_list x))
-          else fun x -> FloatList (List.map to_float (to_list x)));
+          else if arg = "float list" then fun x ->
+            FloatList (List.map to_float (to_list x))
+          else fun x -> StringList (List.map to_string (to_list x)));
         info = flg |> member "info" |> to_string;
       })
     flags
 
-let flags = flags_from_json (Yojson.Basic.from_file "help.json")
+let flags =
+  let flgs =
+    flags_from_json (Yojson.Basic.from_file "resources/help.json")
+  in
+  List.sort (fun x y -> String.compare x.name y.name) flgs
 
 let list_of_string str t =
   String.sub str 1 (String.length str - 2)
@@ -53,7 +60,9 @@ let list_of_string str t =
   |> fun x ->
   if t = "int list" then IntList (List.map int_of_string x)
   else if t = "float list" then FloatList (List.map float_of_string x)
-  else StringList x
+  else
+    StringList
+      (List.map (fun y -> String.sub y 1 (String.length y - 2)) x)
 
 let split_input str =
   str
@@ -66,33 +75,43 @@ let split_input str =
            String.sub x (space + 1) (String.length x - space - 1)
          in
          (String.trim flag, String.trim value))
+  |> List.sort (fun (x, _) (y, _) -> String.compare x y)
+
+let parse_value v flag =
+  try
+    {
+      flag with
+      value =
+        (match flag.arg_type with
+        | "int" -> Int (int_of_string v)
+        | "float" -> Float (float_of_string v)
+        | "string" -> String v
+        | "int list" -> list_of_string v "int list"
+        | "float list" -> list_of_string v "float list"
+        | "string list" -> list_of_string v "string list"
+        | _ -> raise (Invalid_Flag flag.name));
+    }
+  with Failure _ -> raise TypeMismatch
 
 let parse_command content style str =
   {
-    content = "data/" ^ content ^ ".jpg";
-    style = "data/" ^ style ^ ".jpg";
+    content = "data/" ^ String.trim content ^ ".jpg";
+    style = "data/" ^ String.trim style ^ ".jpg";
     flags =
-      List.map
-        (fun (f, v) ->
-          let flag =
-            try List.find (fun x -> x.name = f) flags
-            with Not_found -> raise (Invalid_Flag f)
-          in
-          try
-            {
-              flag with
-              value =
-                (match flag.arg_type with
-                | "int" -> Int (int_of_string v)
-                | "float" -> Float (float_of_string v)
-                | "string" -> String v
-                | "int list" -> list_of_string v "int list"
-                | "float list" -> list_of_string v "float list"
-                | "string list" -> list_of_string v "string list"
-                | _ -> raise (Invalid_Flag flag.name));
-            }
-          with Failure _ -> raise TypeMismatch)
-        (split_input str);
+      begin
+        let rec parse_flags input default =
+          match (input, default) with
+          | (flg, v) :: t1, flag :: t2 ->
+              if flg = flag.name then
+                parse_value v flag :: parse_flags t1 t2
+              else flag :: parse_flags ((flg, v) :: t1) t2
+          | (f, v) :: _, [] -> raise (Invalid_Flag f)
+          | [], l -> l
+        in
+        List.sort
+          (fun x y -> String.compare x.name y.name)
+          (parse_flags (split_input str) flags)
+      end;
   }
 
 let all_flags =
