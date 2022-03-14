@@ -53,7 +53,7 @@ let rec start () =
 
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
-    "\n\nWelcome to the 3110 neuron engine.\n";
+    "\n\nWelcome to the 3110 neural transfer engine.\n";
   print_endline
     "Enter make to start process your image.\n\
      Enter help for a list of flags, or help <\"flg\"> for information \

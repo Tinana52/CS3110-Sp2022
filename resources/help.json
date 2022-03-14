@@ -1,0 +1,32 @@
+{
+  "flags": [
+    {
+      "flag": "style_weight",
+      "arg_type": "int",
+      "default": 1,
+      "info": "style weight"
+    },
+    {
+      "flag": "learning_rate",
+      "arg_type": "float",
+      "default": 1.0,
+      "info": "learning rate"
+    },
+    {
+      "flag": "int_lst",
+      "arg_type": "int list",
+      "default": [
+        1
+      ],
+      "info": "int_list"
+    },
+    {
+      "flag": "str_lst",
+      "arg_type": "string list",
+      "default": [
+        "1"
+      ],
+      "info": "string_list"
+    }
+  ]
+}
