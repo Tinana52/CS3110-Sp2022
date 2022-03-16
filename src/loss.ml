@@ -15,8 +15,8 @@ let get_style_loss input_layers style_layers layers_for_loss =
       (Base.Map.find_exn input_layers lst)
       (Base.Map.find_exn style_layers lst)
   in
-  List.map loss_new_layers layers_for_loss
-  |> List.fold_left Tensor.( + ) (Tensor.of_float0 0.0)
+  List.(map loss_new_layers layers_for_loss
+  |> fold_left Tensor.( + ) (Tensor.of_float0 0.0))
 
 let get_content_loss input_layers content_layers layers_for_loss =
   let loss_new_layers lst =
@@ -24,8 +24,8 @@ let get_content_loss input_layers content_layers layers_for_loss =
       (Base.Map.find_exn input_layers lst)
       (Base.Map.find_exn content_layers lst)
   in
-  List.map loss_new_layers layers_for_loss
-  |> List.fold_left Tensor.( + ) (Tensor.of_float0 0.0)
+  List.(map loss_new_layers layers_for_loss 
+  |> fold_left Tensor.( + ) (Tensor.of_float0 0.0))
 
 let get_combined_loss style_loss style_weight content_loss =
   Tensor.((style_loss * f style_weight) + content_loss)
