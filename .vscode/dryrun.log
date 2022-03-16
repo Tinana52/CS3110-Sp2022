@@ -1,6 +1,5 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/canal/3110/CS-3110-team-no_vtuber_allowed'
+dune build
 make: Leaving directory '/home/canal/3110/CS-3110-team-no_vtuber_allowed'
- 
-make: *** No targets specified and no makefile found.  Stop.
  

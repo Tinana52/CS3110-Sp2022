@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Mar 15 15:02:03 2022
+# Make data base, printed on Tue Mar 15 22:32:01 2022
 
 # Variables
 
@@ -40,8 +40,8 @@ SHELL = /bin/sh
 VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
 # environment
 _ = /home/canal/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/node
-# makefile
-MAKEFILE_LIST := 
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
 # 'override' directive
 GNUMAKEFLAGS := 
 # environment
@@ -55,13 +55,11 @@ VSCODE_CWD = /mnt/c/Users/canal/AppData/Local/Programs/Microsoft VS Code
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/canal/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/bin/remote-cli:/home/canal/.opam/torch/bin:/home/canal/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/ImageMagick-7.0.11-Q16-HDRI:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.3/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.3/libnvvp:/mnt/c/Python38/Scripts/:/mnt/c/Program Files (x86)/VMware/VMware Player/bin/:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Python38:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/MATLAB/R2020b/runtime/win64:/mnt/c/Program Files/MATLAB/R2020b/bin:/mnt/c/Windows/system32/config/systemprofile/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/canal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/canal/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Git LFS:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/wget:/mnt/c/win-builds:/mnt/c/msys64/mingw64/bin:/mnt/c/harmony-1.0:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2021.1.0/:/mnt/c/Python38/Lib/site-packages:/mnt/c/Python38/Scripts:/mnt/c/azcopy:/mnt/c/Program Files/Pandoc/:/mnt/c/Python38/:/mnt/c/Users/canal/AppData/Roaming/npm:/mnt/c/Users/canal/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Users/canal/AppData/Local/Programs/Julia-1.6.2/bin:/mnt/c/Users/canal/AppData/Local/atom/bin:/snap/bin
+PATH = /home/canal/.vscode-server/bin/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/bin/remote-cli:/home/canal/.opam/torch/bin:/home/canal/anaconda3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/ImageMagick-7.0.11-Q16-HDRI:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.3/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.3/libnvvp:/mnt/c/Python38/Scripts/:/mnt/c/Program Files (x86)/VMware/VMware Player/bin/:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Razer/ChromaBroadcast/bin:/mnt/c/Program Files/Common Files/Oracle/Java/javapath:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Python38:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/MATLAB/R2020b/runtime/win64:/mnt/c/Program Files/MATLAB/R2020b/bin:/mnt/c/Windows/system32/config/systemprofile/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/canal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/canal/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/Git LFS:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/wget:/mnt/c/win-builds:/mnt/c/msys64/mingw64/bin:/mnt/c/harmony-1.0:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2021.1.0/:/mnt/c/Python38/Lib/site-packages:/mnt/c/Python38/Scripts:/mnt/c/azcopy:/mnt/c/Program Files/Pandoc/:/mnt/c/Python38/Scripts/:/mnt/c/Python38/:/mnt/c/Users/canal/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/canal/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/canal/AppData/Roaming/npm:/mnt/c/Users/canal/AppData/Local/Programs/MiKTeX/miktex/bin/x64/:/mnt/c/Users/canal/AppData/Local/Programs/Julia-1.6.2/bin:/mnt/c/Users/canal/AppData/Local/atom/bin:/mnt/c/azcopy:/snap/bin
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-370acb87-c908-4928-a255-cfd925c22758.sock
-# environment
-VSCODE_SERVER_TAR = /mnt/c/Users/canal/AppData/Local/Temp/vscode-remote-wsl/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/vscode-server-stable-linux-x64.tar.gz
+VSCODE_IPC_HOOK_CLI = /tmp/vscode-ipc-944b02d4-cad7-4108-86f1-bf7dcc54d8ab.sock
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -75,7 +73,7 @@ PWD = /home/canal/3110/CS-3110-team-no_vtuber_allowed
 # default
 .LOADED := 
 # environment
-WSL_INTEROP = /run/WSL/222_interop
+WSL_INTEROP = /run/WSL/32378_interop
 # environment
 PKG_CONFIG_PATH = /home/canal/.opam/torch/lib/pkgconfig:
 # environment
@@ -109,11 +107,11 @@ USER = canal
 # environment
 CAML_LD_LIBRARY_PATH = /home/canal/.opam/torch/lib/stublibs:/home/canal/.opam/torch/lib/ocaml/stublibs:/home/canal/.opam/torch/lib/ocaml
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := build
 # environment
 NAME = Canal-razer
 # environment
-WSLENV = VSCODE_WSL_EXT_LOCATION/up:VSCODE_SERVER_TAR/up
+WSLENV = VSCODE_WSL_EXT_LOCATION/up
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
@@ -159,7 +157,7 @@ VSCODE_EXTHOST_WILL_SEND_SOCKET = true
 # environment
 WSL_DISTRO_NAME = Ubuntu
 # variable set hash-table stats:
-# Load=73/1024=7%, Rehash=0, Collisions=5/95=5%
+# Load=72/1024=7%, Rehash=0, Collisions=5/97=5%
 
 # Pattern-specific Variable Values
 
@@ -167,15 +165,22 @@ WSL_DISTRO_NAME = Ubuntu
 
 # Directories
 
-# . (device 2064, inode 299611): 8 files, no impossibilities.
+# . (device 2064, inode 299611): 21 files, no impossibilities.
 
-# 8 files, no impossibilities in 1 directories.
+# 21 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
 # No implicit rules.
 
 # Files
+
+utop:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 7):
+	OCAMLRUNPARAM=b dune utop src
 
 # Not a target:
 all:
@@ -184,19 +189,40 @@ all:
 #  File does not exist.
 #  File has not been updated.
 
+.PHONY: test check
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+zip:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 16):
+	rm -f project.zip
+	zip -r project.zip . -x@exclude.lst
+
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  File does not exist.
+#  Last modified 2022-03-15 20:55:56.518289786
 #  File has been updated.
-#  Failed to be updated.
+#  Successfully updated.
 
-# Not a target:
-makefile:
-#  Implicit rule search has been done.
+test:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
 #  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 10):
+	OCAMLRUNPARAM=b dune exec test/main.exe
+
+build:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 4):
+	dune build
 
 # Not a target:
 .DEFAULT:
@@ -204,27 +230,48 @@ makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-GNUmakefile:
-#  Implicit rule search has been done.
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 20):
+	dune clean
+	rm -f project.zip
+
+check:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
 #  File does not exist.
-#  File has been updated.
-#  Failed to be updated.
+#  File has not been updated.
+
+launch:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 13):
+	OCAMLRUNPARAM=b dune exec bin/main.exe
+
+doc:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 24):
+	dune build @doc
 
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
+# Load=13/1024=1%, Rehash=0, Collisions=0/26=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 144 B / avg = 9 B
-# current buf: size = 8162 B / used = 144 B / count = 16 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 34 / storage = 275 B / avg = 8 B
+# current buf: size = 8162 B / used = 275 B / count = 34 / avg = 8 B
 
-# strcache performance: lookups = 19 / hit rate = 15%
+# strcache performance: lookups = 48 / hit rate = 29%
 # hash-table stats:
-# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Tue Mar 15 15:02:03 2022
+# Load=34/8192=0%, Rehash=0, Collisions=1/48=2%
+# Finished Make data base on Tue Mar 15 22:32:01 2022
 
  
