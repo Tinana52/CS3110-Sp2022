@@ -2,31 +2,41 @@
   "flags": [
     {
       "flag": "style_weight",
-      "arg_type": "int",
-      "default": 1,
+      "arg_type": "float",
+      "default": 1e6,
       "info": "style weight"
     },
     {
       "flag": "learning_rate",
       "arg_type": "float",
-      "default": 1.0,
+      "default": 1e-1,
       "info": "learning rate"
     },
     {
-      "flag": "int_lst",
-      "arg_type": "int list",
-      "default": [
-        1
-      ],
-      "info": "int_list"
+      "flag": "total_steps",
+      "arg_type": "int",
+      "default": 80,
+      "info": "total_steps"
     },
     {
-      "flag": "str_lst",
-      "arg_type": "string list",
+      "flag": "layers_style_loss",
+      "arg_type": "int list",
       "default": [
-        "1"
+        0,
+        2,
+        5,
+        7,
+        10
       ],
-      "info": "string_list"
+      "info": "layers_style_loss"
+    },
+    {
+      "flag": "layers_content_loss",
+      "arg_type": "int list",
+      "default": [
+        7
+      ],
+      "info": "layers_content_loss"
     }
   ]
 }

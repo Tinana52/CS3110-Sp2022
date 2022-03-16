@@ -2,3 +2,7 @@
  (name project)
  (public_name Project)
  (libraries ANSITerminal torch yojson torch.core torch.vision))
+
+; (executable
+;  (name nst)
+;  (libraries ANSITerminal torch yojson torch.core torch.vision))

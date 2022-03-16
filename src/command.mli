@@ -20,7 +20,7 @@ type command
 val all_flags : string list
 (** [all_flags] is the list of all possible optional argument names. *)
 
-val parse_command : string -> string -> string -> command
+val parse_command : string -> string -> string -> string -> command
 (** [parse_command c s cmd] parses a user's input into a [command]. It
     ignores any unnecessary spaces. Raises [Invalid_Flag] when an
     unexpected flag is encountered. Raises [TypeMismatch] if an optional
@@ -35,6 +35,9 @@ val get_content : command -> string
 
 val get_style : command -> string
 (** [get_style cmd] returns the style image location in [cmd]. *)
+
+val get_model : command -> string
+(** [get_model cmd] returns the pre-trained model location in [cmd]. *)
 
 val get_flags : command -> (string * flag_type) list
 (** [get_style cmd] returns the value of all flags in [cmd] as an

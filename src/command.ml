@@ -21,6 +21,7 @@ type flag = {
 type command = {
   content : string;
   style : string;
+  model : string;
   flags : flag list;
 }
 
@@ -93,10 +94,11 @@ let parse_value v flag =
     }
   with Failure _ -> raise TypeMismatch
 
-let parse_command content style str =
+let parse_command content style model str =
   {
     content = "data/" ^ String.trim content ^ ".jpg";
     style = "data/" ^ String.trim style ^ ".jpg";
+    model = "resources/" ^ String.trim model ^ ".ot";
     flags =
       begin
         let rec parse_flags input default =
@@ -126,4 +128,5 @@ let flag_info flag =
 
 let get_content cmd = cmd.content
 let get_style cmd = cmd.style
+let get_model cmd = cmd.model
 let get_flags cmd = List.map (fun x -> (x.name, x.value)) cmd.flags
