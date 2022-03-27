@@ -11,7 +11,7 @@ type flags = {
   layers_style_loss : int list;
   layers_content_loss : int list;
 }
-(** The type [flags] represents the argument values. *)
+(** The type [flags] represents the arguments values. *)
 
 type command
 (** The type [command] includes data about the content image, style

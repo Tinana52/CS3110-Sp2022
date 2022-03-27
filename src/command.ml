@@ -146,23 +146,23 @@ let get_flags flags =
     style_weight =
       (match find_flag flags "style_weight" with
       | Float x -> x
-      | _ -> failwith "Internal error.");
+      | _ -> failwith "Internal error. ");
     learning_rate =
       (match find_flag flags "learning_rate" with
       | Float x -> x
-      | _ -> failwith "Internal error.");
+      | _ -> failwith "Internal error. ");
     total_steps =
       (match find_flag flags "total_steps" with
       | Int x -> x
-      | _ -> failwith "Internal error.");
+      | _ -> failwith "Internal error. ");
     layers_content_loss =
       (match find_flag flags "layers_content_loss" with
       | IntList x -> x
-      | _ -> failwith "Internal error.");
+      | _ -> failwith "Internal error. ");
     layers_style_loss =
       (match find_flag flags "layers_style_loss" with
       | IntList x -> x
-      | _ -> failwith "Internal error.");
+      | _ -> failwith "Internal error. ");
   }
 
 let get_all_flags cmd = get_flags cmd.flags
