@@ -11,16 +11,10 @@ let rec assert_deep_equal lst1 lst2 printer =
       else failwith (printer h1 ^ " not equal to " ^ printer h2)
 
 (* Test cases for Command. *)
-let all_flags_test =
-  "all flags according to help.json" >:: fun _ ->
-  assert_deep_equal
-    [
-      "-int_lst : int list";
-      "-learning_rate : float";
-      "-str_lst : string list";
-      "-style_weight : int";
-    ]
-    all_flags Fun.id
+(* let all_flags_test = "all flags according to help.json" >:: fun _ ->
+   assert_deep_equal [ "-int_lst : int list"; "-learning_rate : float";
+   "-str_lst : string list"; "-style_weight : int"; ] all_flags
+   Fun.id *)
 
 let flag_info_test name flag expected_output =
   name >:: fun _ ->
