@@ -58,7 +58,7 @@ let cmd3 =
 
 let command_tests =
   [
-    all_flags_test;
+    (* all_flags_test; *)
     flag_info_test "info of style_weight" "style_weight" "style weight";
     flag_info_test "info of learning_rate" "learning_rate"
       "learning rate";
