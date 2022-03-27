@@ -18,6 +18,14 @@ type flag = {
   info : string;
 }
 
+type flags = {
+  style_weight : float;
+  learning_rate : float;
+  total_steps : int;
+  layers_style_loss : int list;
+  layers_content_loss : int list;
+}
+
 type command = {
   content : string;
   style : string;
@@ -47,6 +55,9 @@ let flags_from_json t =
         info = flg |> member "info" |> to_string;
       })
     flags
+
+let find_flag flags name =
+  (List.find (fun x -> x.name = name) flags).value
 
 let flags =
   let flgs =
@@ -96,9 +107,9 @@ let parse_value v flag =
 
 let parse_command content style model str =
   {
-    content = "data/" ^ String.trim content ^ ".jpg";
-    style = "data/" ^ String.trim style ^ ".jpg";
-    model = "resources/" ^ String.trim model ^ ".ot";
+    content = "data" ^ Filename.dir_sep ^ String.trim content ^ ".jpg";
+    style = "data" ^ Filename.dir_sep ^ String.trim style ^ ".jpg";
+    model = "resources" ^ Filename.dir_sep ^ String.trim model ^ ".ot";
     flags =
       begin
         let rec parse_flags input default =
@@ -129,4 +140,30 @@ let flag_info flag =
 let get_content cmd = cmd.content
 let get_style cmd = cmd.style
 let get_model cmd = cmd.model
-let get_flags cmd = List.map (fun x -> (x.name, x.value)) cmd.flags
+
+let get_flags flags =
+  {
+    style_weight =
+      (match find_flag flags "style_weight" with
+      | Float x -> x
+      | _ -> failwith "Internal error.");
+    learning_rate =
+      (match find_flag flags "learning_rate" with
+      | Float x -> x
+      | _ -> failwith "Internal error.");
+    total_steps =
+      (match find_flag flags "total_steps" with
+      | Int x -> x
+      | _ -> failwith "Internal error.");
+    layers_content_loss =
+      (match find_flag flags "layers_content_loss" with
+      | IntList x -> x
+      | _ -> failwith "Internal error.");
+    layers_style_loss =
+      (match find_flag flags "layers_style_loss" with
+      | IntList x -> x
+      | _ -> failwith "Internal error.");
+  }
+
+let get_all_flags cmd = get_flags cmd.flags
+let default = get_flags flags

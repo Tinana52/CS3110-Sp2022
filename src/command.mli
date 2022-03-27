@@ -4,14 +4,14 @@ exception Invalid_Flag of string
 exception TypeMismatch
 (** Raised when a wrong flag type is encountered. *)
 
-(** The type [flag_type] represents the type of a flag argument. *)
-type flag_type =
-  | Int of int
-  | Float of float
-  | String of string
-  | IntList of int list
-  | FloatList of float list
-  | StringList of string list
+type flags = {
+  style_weight : float;
+  learning_rate : float;
+  total_steps : int;
+  layers_style_loss : int list;
+  layers_content_loss : int list;
+}
+(** The type [flags] represents the argument values. *)
 
 type command
 (** The type [command] includes data about the content image, style
@@ -39,6 +39,10 @@ val get_style : command -> string
 val get_model : command -> string
 (** [get_model cmd] returns the pre-trained model location in [cmd]. *)
 
-val get_flags : command -> (string * flag_type) list
-(** [get_style cmd] returns the value of all flags in [cmd] as an
-    association list. Each element is in the format of [(name,value)]. *)
+val get_all_flags : command -> flags
+(** [get_all_flags cmd] returns a tuple of values of all arguments in
+    [cmd]. *)
+
+val default : flags
+(** [default] is the default value of all flags read from the .json
+    file. *)

@@ -17,17 +17,8 @@ let make () =
   print_string "> Flags: ";
   let flags = read_line () in
   let cmd = parse_command content style pre_trained_model flags in
-  (* let flags = get_flags cmd in let style_weight = match find
-     "style_weight" flags with | _, Float f -> f | _, _ -> failwith
-     "Unknown error" in let learning_rate = match find "learning_rate"
-     flags with | _, Float f -> f | _, _ -> failwith "Unknown error" in
-     let total_steps = match find "total_steps" flags with | _, Int i ->
-     i | _, _ -> failwith "Unknown error" in let layers_style_loss =
-     match find "layers_style_loss" flags with | _, IntList i -> i | _,
-     _ -> failwith "Unknown error" in let layers_content_loss = match
-     find "layers_content_loss" flags with | _, IntList i -> i | _, _ ->
-     failwith "Unknown error" in *)
   Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
+    (get_all_flags cmd)
 (* TODO: preprocess image + ml stuff. Have () |> make |> preprocessing
    |> ml to be () in the end. *)
 

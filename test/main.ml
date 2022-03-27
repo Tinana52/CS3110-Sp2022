@@ -34,20 +34,13 @@ let style_test name cmd expected_output =
   name >:: fun _ ->
   assert_equal (get_style cmd) expected_output ~printer:Fun.id
 
-let flags_test name cmd expected_output =
-  name >:: fun _ ->
-  assert_deep_equal (get_flags cmd) expected_output (fun (n, v) ->
-      n ^ " "
-      ^
-      match v with
-      | Int x -> string_of_int x
-      | Float x -> string_of_float x
-      | String x -> Fun.id x
-      | IntList x ->
-          "[" ^ String.concat "; " (List.map string_of_int x) ^ "]"
-      | FloatList x ->
-          "[" ^ String.concat "; " (List.map string_of_float x) ^ "]"
-      | StringList x -> "[" ^ String.concat "; " x ^ "]")
+(* let flags_test name cmd expected_output = name >:: fun _ ->
+   assert_deep_equal (get_flags cmd) expected_output (fun (n, v) -> n ^
+   " " ^ match v with | Int x -> string_of_int x | Float x ->
+   string_of_float x | String x -> Fun.id x | IntList x -> "[" ^
+   String.concat "; " (List.map string_of_int x) ^ "]" | FloatList x ->
+   "[" ^ String.concat "; " (List.map string_of_float x) ^ "]" |
+   StringList x -> "[" ^ String.concat "; " x ^ "]") *)
 
 let parse_fail_flag name content style flags inv_flg =
   name >:: fun _ ->
@@ -79,27 +72,14 @@ let command_tests =
     flag_info_test "info of str_lst" "str_lst" "string_list";
     content_test "default content" cmd1 "data/default.jpg";
     style_test "default style" cmd1 "data/default.jpg";
-    flags_test "no flag provided" cmd1
-      [
-        ("int_lst", IntList [ 1 ]);
-        ("learning_rate", Float 1.0);
-        ("str_lst", StringList [ "1" ]);
-        ("style_weight", Int 1);
-      ];
-    flags_test "1 flag provided" cmd2
-      [
-        ("int_lst", IntList [ 1 ]);
-        ("learning_rate", Float 2.0);
-        ("str_lst", StringList [ "1" ]);
-        ("style_weight", Int 1);
-      ];
-    flags_test "4 flag provided" cmd3
-      [
-        ("int_lst", IntList [ 2344; 10 ]);
-        ("learning_rate", Float 2.0);
-        ("str_lst", StringList [ "apple"; "banana" ]);
-        ("style_weight", Int 10);
-      ];
+    (* flags_test "no flag provided" cmd1 [ ("int_lst", IntList [ 1 ]);
+       ("learning_rate", Float 1.0); ("str_lst", StringList [ "1" ]);
+       ("style_weight", Int 1); ]; flags_test "1 flag provided" cmd2 [
+       ("int_lst", IntList [ 1 ]); ("learning_rate", Float 2.0);
+       ("str_lst", StringList [ "1" ]); ("style_weight", Int 1); ];
+       flags_test "4 flag provided" cmd3 [ ("int_lst", IntList [ 2344;
+       10 ]); ("learning_rate", Float 2.0); ("str_lst", StringList [
+       "apple"; "banana" ]); ("style_weight", Int 10); ]; *)
     parse_fail_flag "invalid flag causes parsing to fail" "d" "d"
       "-foo 10" "foo";
     parse_fail_flag "invalid flag causes parsing to fail" "d" "d"
@@ -108,5 +88,5 @@ let command_tests =
       "-learning_rate \"123\"";
   ]
 
-let suite = "test suite for A2" >::: List.flatten [ command_tests ]
+let suite = "test suite for project" >::: List.flatten [ command_tests ]
 let _ = run_test_tt_main suite
