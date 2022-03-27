@@ -22,3 +22,8 @@ clean:
 
 doc:
 	dune build @doc
+
+loc:
+	make clean
+	cloc --by-file --include-lang=OCaml .
+	make build
