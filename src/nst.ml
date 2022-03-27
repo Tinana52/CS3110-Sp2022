@@ -1,8 +1,8 @@
+open Command
 open Torch
 open Torch_vision
 open Loader
 open Loss
-open Command
 
 (* let style_weight = 1e6 let lr = 1e-1 let total_steps = 80
 
