@@ -81,7 +81,10 @@ let split_input str =
   |> String.split_on_char '-'
   |> List.filter (( <> ) "")
   |> List.map (fun x ->
-         let space = String.index x ' ' in
+         let space =
+           try String.index x ' '
+           with Not_found -> raise (Invalid_Flag x)
+         in
          let flag = String.sub x 0 space in
          let value =
            String.sub x (space + 1) (String.length x - space - 1)
@@ -105,7 +108,7 @@ let parse_value v flag =
     }
   with Failure _ -> raise TypeMismatch
 
-let parse_command content style model str =
+let parse_command content style model input_flags =
   {
     content = "data" ^ Filename.dir_sep ^ String.trim content ^ ".jpg";
     style = "data" ^ Filename.dir_sep ^ String.trim style ^ ".jpg";
@@ -123,7 +126,7 @@ let parse_command content style model str =
         in
         List.sort
           (fun x y -> String.compare x.name y.name)
-          (parse_flags (split_input str) flags)
+          (parse_flags (split_input input_flags) flags)
       end;
   }
 

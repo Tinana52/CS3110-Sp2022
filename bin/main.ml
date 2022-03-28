@@ -1,6 +1,5 @@
 open Project
 open Command
-open Nst
 
 let print_list f l =
   List.fold_left (fun _ y -> print_endline (f y)) () l
@@ -19,8 +18,8 @@ let make () =
   let cmd = parse_command content style pre_trained_model flags in
   Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
     (get_all_flags cmd)
-(* TODO: preprocess image + ml stuff. Have () |> make |> preprocessing
-   |> ml to be () in the end. *)
+(* TODO: preprocess image + ml stuff. () |> make |> preprocessing |> ml
+   to be () in the end. *)
 
 let rec start () =
   match read_line () with
@@ -41,8 +40,12 @@ let rec start () =
       | TypeMismatch ->
           print_endline "Incorrect arguent type. ";
           print_string "> ";
+          start ()
+      | Loader.File_not_found s ->
+          print_endline ("File not found: " ^ s);
+          print_string "> ";
           start ())
-  | cmd when String.sub cmd 0 4 = "help" -> (
+  | cmd when String.length cmd > 4 && String.sub cmd 0 4 = "help" -> (
       try
         print_endline
           (flag_info (String.sub cmd 5 (String.length cmd - 5)));
@@ -62,7 +65,7 @@ let main () =
     "\n\nWelcome to the 3110 neural transfer engine.\n";
   print_endline
     "Enter make to start process your image.\n\
-     Enter help for a list of flags, or help <\"flg\"> for information \
+     Enter help for a list of flags, or help <flag> for information \
      about a specific flag. ";
   print_string "> ";
   start ()

@@ -1,17 +1,9 @@
-open Command
 open Torch
 open Torch_vision
 open Loader
 open Loss
 
-(* let style_weight = 1e6 let lr = 1e-1 let total_steps = 80
-
-   (* desired depth layers to compute style losses : *) let
-   layers_style_loss = [ 0; 2; 5; 6; 7 ]
-
-   (* desired depth layers to compute content losses : *) let
-   layers_content_loss = [ 7 ] *)
-let flags = ref default
+let flags = ref Command.default
 
 let get_inputs_tensors cpu style_img_path content_img_path weight_path =
   let model =
