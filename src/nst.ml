@@ -59,7 +59,7 @@ let main style content model input_flags =
     get_inputs_tensors cpu style content model
   in
   let model_paras = Var_store.create ~name:"optim" ~device:cpu () in
-  let copied_model_paras =
+  let image =
     Var_store.new_var_copy model_paras ~src:content_img ~name:"in"
   in
   let style_layers, content_layers =
@@ -72,7 +72,7 @@ let main style content model input_flags =
   in
   let _ = Stdio.printf "Training begin for the new artwork \n%!" in
   let _ =
-    training_nst model copied_model_paras optimizer style_layers
-      content_layers !flags.total_steps
+    training_nst model image optimizer style_layers content_layers
+      !flags.total_steps
   in
-  Imagenet.write_image copied_model_paras ~filename:"art.png"
+  Imagenet.write_image image ~filename:"art.png"
