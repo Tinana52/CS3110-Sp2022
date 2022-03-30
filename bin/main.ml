@@ -26,9 +26,9 @@ let rec make () =
   let res = tmp_file_loc "resize" in
   let gaus = tmp_file_loc "gaussian" in
   let grad = tmp_file_loc "gradient" in
-  Sys.remove res;
-  Sys.remove gaus;
-  Sys.remove grad;
+  if Sys.file_exists res then Sys.remove res;
+  if Sys.file_exists gaus then Sys.remove gaus;
+  if Sys.file_exists grad then Sys.remove grad;
   print_endline "Resizing image...";
   demo_resize (get_content cmd) res flgs.size;
   print_endline "Blurring...";
@@ -45,7 +45,8 @@ let rec make () =
   Sys.remove gaus;
   Sys.remove grad;
   print_endline
-    ("Outputed to data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep);
+    ("Outputted to data" ^ Filename.dir_sep ^ "output"
+   ^ Filename.dir_sep);
   print_string "> ";
   start ()
 (* TODO: preprocess image + ml stuff. () |> make |> preprocessing |> ml
