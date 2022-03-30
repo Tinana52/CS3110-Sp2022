@@ -41,13 +41,13 @@
     {
       "flag": "k",
       "arg_type": "int",
-      "default": 21,
+      "default": 5,
       "info": "k"
     },
     {
       "flag": "sigma",
       "arg_type": "float",
-      "default": 3.0,
+      "default": 1.0,
       "info": "sigma"
     },
     {
