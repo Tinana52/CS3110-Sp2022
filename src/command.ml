@@ -112,19 +112,19 @@ let parse_value v flag =
     }
   with Failure _ -> raise TypeMismatch
 
-let determine_filename name fix =
+let determine_filename name =
   let counter = ref 0 in
   let output = ref name in
   while
     Sys.file_exists
       ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
-     ^ "_" ^ fix ^ ".png")
+     ^ ".png")
   do
     output := name ^ string_of_int !counter;
     incr counter
   done;
   "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
-  ^ "_" ^ fix ^ ".png"
+  ^ ".png"
 
 let parse_command content style model input_flags output =
   {
@@ -202,5 +202,5 @@ let get_flags flags =
   }
 
 let get_all_flags cmd = get_flags cmd.flags
-let get_output cmd fix = determine_filename cmd.output fix
+let get_output cmd = determine_filename cmd.output
 let default = get_flags flags

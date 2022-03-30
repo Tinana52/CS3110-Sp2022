@@ -2,11 +2,35 @@ open Project
 open Command
 open Img
 
+exception File_not_found of string
+
 let print_list f l =
   List.fold_left (fun _ y -> print_endline (f y)) () l
 
 let find name flags = List.find (fun (x, _) -> x = name) flags
 let tmp_file_loc name = "tmp" ^ Filename.dir_sep ^ name ^ ".jpg"
+
+let artwork cmd =
+  Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
+    (get_all_flags cmd) (get_output cmd)
+
+let picture cmd =
+  let res_cont = tmp_file_loc "resize_style" in
+  let flgs = get_all_flags cmd in
+  let res_style = tmp_file_loc "resize_content" in
+  let gaus_cont = tmp_file_loc "gaussian_content" in
+  (* let gaus_style = tmp_file_loc "gaussian_style" in *)
+  let grad = tmp_file_loc "gradient" in
+  let _ = Sys.command "mkdir tmp" in
+  print_endline "Resizing... ";
+  demo_resize_default (get_content cmd) res_cont;
+  demo_resize_default (get_style cmd) res_style;
+  print_endline "Generating gradient... ";
+  demo_gradient res_style grad flgs.k flgs.sigma;
+  print_endline "Blurring... ";
+  demo_gaussian res_cont gaus_cont flgs.k flgs.sigma;
+  (* demo_gaussian grad gaus_style flgs.k flgs.sigma; *)
+  Nst.main grad gaus_cont (get_model cmd) flgs (get_output cmd)
 
 let rec make () =
   print_string "> Content image: ";
@@ -19,34 +43,29 @@ let rec make () =
   let flags = read_line () in
   print_string "> Output file name: ";
   let output = read_line () in
+  print_endline "> Artwork or picture? [artwork/picture] ";
+  print_string "> ";
+  let response = read_line () in
   let cmd =
     parse_command content style pre_trained_model flags output
   in
-  let flgs = get_all_flags cmd in
-  let res = tmp_file_loc "resize" in
-  let gaus = tmp_file_loc "gaussian" in
-  let grad = tmp_file_loc "gradient" in
+  if not (Sys.file_exists (get_content cmd)) then
+    raise (File_not_found (get_content cmd));
+  if not (Sys.file_exists (get_style cmd)) then
+    raise (File_not_found (get_style cmd));
+  if not (Sys.file_exists (get_model cmd)) then
+    raise (File_not_found (get_model cmd));
   (try
      let _ = Sys.is_directory "tmp" in
      let _ = Sys.command "rm -r tmp" in
      ()
    with Sys_error _ -> ());
-  let _ = Sys.command "mkdir tmp" in
-  print_endline "Resizing... ";
-  demo_resize (get_content cmd) res flgs.size;
-  print_endline "Blurring... ";
-  demo_gaussian (get_content cmd) gaus flgs.k flgs.sigma;
-  print_endline "Generating gradient... ";
-  demo_gradient (get_content cmd) grad flgs.k flgs.sigma;
-  Nst.main (get_style cmd) res (get_model cmd) flgs
-    (get_output cmd "resize");
-  Nst.main (get_style cmd) gaus (get_model cmd) flgs
-    (get_output cmd "gaussian");
-  Nst.main (get_style cmd) grad (get_model cmd) flgs
-    (get_output cmd "gradient");
+  if response = "artwork" then artwork cmd
+  else if response = "picture" then picture cmd
+  else failwith "Invalid. ";
   let _ = Sys.command "rm -r tmp" in
   print_endline
-    ("Outputted to data" ^ Filename.dir_sep ^ "output"
+    ("Output location: data" ^ Filename.dir_sep ^ "output"
    ^ Filename.dir_sep);
   print_string "> ";
   start ()
@@ -73,8 +92,12 @@ and start () =
           print_endline "Incorrect arguent type. ";
           print_string "> ";
           start ()
-      | Loader.File_not_found s ->
+      | File_not_found s ->
           print_endline ("File not found: " ^ s);
+          print_string "> ";
+          start ()
+      | Failure s ->
+          print_endline s;
           print_string "> ";
           start ())
   | cmd when String.length cmd > 4 && String.sub cmd 0 4 = "help" -> (

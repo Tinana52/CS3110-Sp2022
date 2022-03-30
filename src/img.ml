@@ -356,4 +356,15 @@ let demo_gradient file_in file_out k sigma =
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out tensor_from_3d
 
-let main = ()
+(* [demo_resize_default file_in file_out] Same as [demo_resize file_in
+   file_out size] except always resize to 512 * 512 img. *)
+let demo_resize_default file_in file_out =
+  let img_tensor = read_img_to_tensor_reshape file_in (512, 512) in
+  (* get the float array array array from the tensor *)
+  let img_3d_float = img_tensor |> Tensor.to_float3_exn in
+  (* get tensor from the 3d float, tensor_from_3d is <3,256,256> *)
+  let tensor_from_3d = img_3d_float |> Tensor.of_float3 in
+  (* normalize only works for tensor of 3 channels!!! *)
+  let normalized = tensor_from_3d |> normalize in
+  (* write to output *)
+  Imagenet.write_image ~filename:file_out normalized

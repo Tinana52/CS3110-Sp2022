@@ -47,7 +47,7 @@ val get_all_flags : command -> flags
 (** [get_all_flags cmd] returns a tuple of values of all arguments in
     [cmd]. *)
 
-val get_output : command -> string -> string
+val get_output : command -> string
 (** [get_output cmd] returns the user-inputted output file name in
     [cmd]. *)
 
