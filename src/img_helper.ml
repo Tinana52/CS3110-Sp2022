@@ -57,6 +57,10 @@ let unnormalize tensor =
 let output_tensor tensor = Tensor.to_type tensor ~type_:(T Float)
 let get_shape_str tensor = Tensor.shape_str tensor
 
+let get_img_size tensor =
+  let lst = get_shape_str tensor |> String.split_on_char ',' in
+  List.nth lst 1 |> String.trim |> int_of_string
+
 let print_shape tensor =
   Stdio.print_endline
     ("The shape of this tensor is: " ^ get_shape_str tensor)
@@ -70,7 +74,7 @@ let read_img_to_tensor (filename : string) : Tensor.t =
   |> unnormalize |> Tensor.to_list |> List.hd
 
 (** Basically the same function as in read_img_to_tensor, but allow
-    reshaping into [size] where [size] is (width, hight). Note: this
+    reshaping into [size] where [size] is (width, height). Note: this
     doesn't normalize the image!! *)
 let read_img_to_tensor_reshape (filename : string) (size : int * int) :
     Tensor.t =
