@@ -13,23 +13,7 @@ Step 3: download the pretrained VGG-16 weights from
 https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg16.ot
 and save the file in folder `/resources`
 
-Step 4: install openCV locally:
-`cd ~`
-`sudo cmake`
-`wget -O opencv.zip https://github.com/opencv/opencv/archive/4.x.zip`
-`unzip opencv.zip`
-`mkdir -p build && cd build`
-`cmake  ../opencv-4.x`
-`cmake --build .`
-
-Step 5: install OpenCV-Ocaml:
-`sudo apt install liblapacke-dev libopenblas-dev`
-`export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"`
-`eval $(opam env)`
-`opam pin add opencv https://github.com/Calsign/ocaml-opencv.git`
-
 To run the engine,
-`make build`
 `make launch`
 Content image can be either of:
 `cornell1` `cornell2` `cornell3`
@@ -42,4 +26,9 @@ Pre-trained model should be `vgg16`
 `-learning_rate 1e-1`
 `-total_steps 80`
 ## We will update this list as soon as we add more pretrained models
-The output artwork is shown as `art.png`
+The default flags for filtering/resizing are:
+`-k 5`
+`-sigma 1.0`
+All of the flags are optional. To specify a flag value, use `-flag value`. The flags not specified will use the default values. 
+What we generated in MS1 is an "artwork". What we generated in MS2 is a "picture". The differences are explained in our progress report. 
+The output artwork is in `/data/output`
