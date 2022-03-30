@@ -1,7 +1,7 @@
 .PHONY: test check
 
 build:
-	dune build
+	dune build src
 
 utop:
 	OCAMLRUNPARAM=b dune utop src
