@@ -51,7 +51,7 @@ let training_nst
     Caml.Gc.full_major ()
   done
 
-let main style content model input_flags =
+let main style content model input_flags output =
   let () = flags := input_flags in
   let module Sys = Caml.Sys in
   let cpu = Device.cuda_if_available () in
@@ -75,4 +75,4 @@ let main style content model input_flags =
     training_nst model image optimizer style_layers content_layers
       !flags.total_steps
   in
-  Imagenet.write_image image ~filename:"art.png"
+  Imagenet.write_image image ~filename:output

@@ -6,7 +6,7 @@ let print_list f l =
 
 let find name flags = List.find (fun (x, _) -> x = name) flags
 
-let make () =
+let rec make () =
   print_string "> Content image: ";
   let content = read_line () in
   print_string "> Style image: ";
@@ -15,13 +15,19 @@ let make () =
   let pre_trained_model = read_line () in
   print_string "> Flags: ";
   let flags = read_line () in
-  let cmd = parse_command content style pre_trained_model flags in
+  print_string "> Output file name: ";
+  let output = read_line () in
+  let cmd =
+    parse_command content style pre_trained_model flags output
+  in
   Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
-    (get_all_flags cmd)
+    (get_all_flags cmd) (get_output cmd);
+  print_string "> ";
+  start ()
 (* TODO: preprocess image + ml stuff. () |> make |> preprocessing |> ml
    to be () in the end. *)
 
-let rec start () =
+and start () =
   match read_line () with
   | exception End_of_file ->
       print_string "Critical error. ";

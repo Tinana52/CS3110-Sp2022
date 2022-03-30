@@ -31,6 +31,7 @@ type command = {
   style : string;
   model : string;
   flags : flag list;
+  output : string;
 }
 
 let flags_from_json t =
@@ -108,7 +109,21 @@ let parse_value v flag =
     }
   with Failure _ -> raise TypeMismatch
 
-let parse_command content style model input_flags =
+let determine_filename name =
+  let counter = ref 0 in
+  let output = ref name in
+  while
+    Sys.file_exists
+      ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
+     ^ ".png")
+  do
+    output := name ^ string_of_int !counter;
+    incr counter
+  done;
+  "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
+  ^ ".png"
+
+let parse_command content style model input_flags output =
   {
     content = "data" ^ Filename.dir_sep ^ String.trim content ^ ".jpg";
     style = "data" ^ Filename.dir_sep ^ String.trim style ^ ".jpg";
@@ -128,6 +143,9 @@ let parse_command content style model input_flags =
           (fun x y -> String.compare x.name y.name)
           (parse_flags (split_input input_flags) flags)
       end;
+    output =
+      (let name = String.trim output in
+       determine_filename (if name = "" then "art" else name));
   }
 
 let all_flags =
@@ -169,4 +187,5 @@ let get_flags flags =
   }
 
 let get_all_flags cmd = get_flags cmd.flags
+let get_output cmd = cmd.output
 let default = get_flags flags

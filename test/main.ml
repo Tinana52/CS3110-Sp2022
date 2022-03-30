@@ -46,15 +46,16 @@ let parse_fail_type name content style flags =
   assert_raises TypeMismatch (fun () ->
       parse_command content style flags)
 
-let cmd1 = parse_command "default" "default" "vgg16" ""
+let cmd1 = parse_command "default" "default" "vgg16" "" ""
 
 let cmd2 =
-  parse_command "default" "default" "vgg16" "-learning_rate 2.0"
+  parse_command "default" "default" "vgg16" "-learning_rate 2.0" ""
 
 let cmd3 =
   parse_command "default" "default" "vgg16"
     "-learning_rate 2.0 -str_lst [\"apple\", \"banana\"] -int_lst \
      [2344,10] -style_weight 10"
+    ""
 
 let command_tests =
   [
