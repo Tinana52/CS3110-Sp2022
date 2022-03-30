@@ -266,9 +266,10 @@ let fnormalize img =
 
 (* ############## ABOVE ARE FILTER FUNCTIONS ############## *)
 
-(* [demo_resize test_in test_out size] Resize the img named file_in
-   (e.g. "data/cornell1.jpg") by making it 'size' times bigger/smaller
-   and output as file_out. The input 'size' should be float. *)
+(* [demo_resize file_in file_out size] Resize the input img named
+   file_in (e.g. "data/cornell1.jpg") by making it 'size' times
+   bigger/smaller and output as file_out. The input 'size' should be
+   float. *)
 let demo_resize file_in file_out size =
   let old_size =
     read_img_to_tensor file_in |> get_img_size |> Float.of_int
@@ -286,6 +287,9 @@ let demo_resize file_in file_out size =
   (* write to output *)
   Imagenet.write_image ~filename:file_out normalized
 
+(* [demo_gaussian file_in file_out k sigma] Blur input image named
+   file_in by applying the k x k gaussian filter with standard deviation
+   sigma, and output as file_out. Assume k is odd, sigma is float. *)
 let demo_gaussian file_in file_out k sigma =
   let old_size = read_img_to_tensor file_in |> get_img_size in
   let img_tensor =
@@ -313,6 +317,10 @@ let demo_gaussian file_in file_out k sigma =
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out normalized
 
+(* [demo_gradient file_in file_out k sigma] Process input image named
+   file_in by Computing the gradient magnitude at each pixel. If sigma
+   >0, smooth the image with a gaussian first, and output as file_out.
+   Assume k is odd, sigma is float. *)
 let demo_gradient file_in file_out k sigma =
   let old_size = read_img_to_tensor file_in |> get_img_size in
   let img_tensor =
