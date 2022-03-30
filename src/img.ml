@@ -6,25 +6,6 @@ let test_in = "data/cornell1.jpg"
 let test_out = "data/test_out_full_color.jpg"
 let test_out_grey = "data/test_out_one_channel.jpg"
 
-(** load_image_no_resize_and_crop reads the image, store it in a
-    <1,channel,width,hight> tensor; [read_img_to_tensor] gets the
-    <channel,width,hight> tensor, which is the representation for the
-    read image. Note: this doesn't normalize the image!! *)
-let read_img_to_tensor (filename : string) : Tensor.t =
-  Imagenet.load_image_no_resize_and_crop filename
-  |> unnormalize |> Tensor.to_list |> List.hd
-
-(** Basically the same function as in read_img_to_tensor, but allow
-    reshaping into [size] where [size] is (width, hight). Note: this
-    doesn't normalize the image!! *)
-let read_img_to_tensor_reshape (filename : string) (size : int * int) :
-    Tensor.t =
-  let load_image filename size =
-    Image.load_image filename ~resize:size
-    |> Base.Or_error.ok_exn |> output_tensor
-  in
-  load_image filename size |> Tensor.to_list |> List.hd
-
 let demo_get_full_img =
   (* get the tensor, for example Tensor<3,1024,1024> from the image *)
   let img_tensor = read_img_to_tensor_reshape test_in (1024, 1024) in
