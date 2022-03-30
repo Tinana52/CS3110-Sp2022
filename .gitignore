@@ -18,6 +18,7 @@ _build
 *~
 \#*\#
 .DS_Store
+tmp
 
 #git
 .vscode

@@ -2,6 +2,7 @@
 
 build:
 	dune build src
+	dune build bin
 
 utop:
 	OCAMLRUNPARAM=b dune utop src
