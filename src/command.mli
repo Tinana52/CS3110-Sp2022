@@ -10,6 +10,9 @@ type flags = {
   total_steps : int;
   layers_style_loss : int list;
   layers_content_loss : int list;
+  k : int;
+  sigma : float;
+  size : float;
 }
 (** The type [flags] represents the arguments values. *)
 
@@ -44,7 +47,7 @@ val get_all_flags : command -> flags
 (** [get_all_flags cmd] returns a tuple of values of all arguments in
     [cmd]. *)
 
-val get_output : command -> string
+val get_output : command -> string -> string
 (** [get_output cmd] returns the user-inputted output file name in
     [cmd]. *)
 

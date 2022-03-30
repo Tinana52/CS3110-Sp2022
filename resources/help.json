@@ -37,6 +37,24 @@
         7
       ],
       "info": "layers_content_loss"
+    },
+    {
+      "flag": "k",
+      "arg_type": "int",
+      "default": 21,
+      "info": "k"
+    },
+    {
+      "flag": "sigma",
+      "arg_type": "float",
+      "default": 3.0,
+      "info": "sigma"
+    },
+    {
+      "flag": "size",
+      "arg_type": "float",
+      "default": 1.0,
+      "info": "size"
     }
   ]
 }

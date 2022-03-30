@@ -24,6 +24,9 @@ type flags = {
   total_steps : int;
   layers_style_loss : int list;
   layers_content_loss : int list;
+  k : int;
+  sigma : float;
+  size : float;
 }
 
 type command = {
@@ -109,19 +112,19 @@ let parse_value v flag =
     }
   with Failure _ -> raise TypeMismatch
 
-let determine_filename name =
+let determine_filename name fix =
   let counter = ref 0 in
   let output = ref name in
   while
     Sys.file_exists
       ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
-     ^ ".png")
+     ^ "_" ^ fix ^ ".png")
   do
     output := name ^ string_of_int !counter;
     incr counter
   done;
   "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
-  ^ ".png"
+  ^ "_" ^ fix ^ ".png"
 
 let parse_command content style model input_flags output =
   {
@@ -145,7 +148,7 @@ let parse_command content style model input_flags output =
       end;
     output =
       (let name = String.trim output in
-       determine_filename (if name = "" then "art" else name));
+       if name = "" then "art" else name);
   }
 
 let all_flags =
@@ -184,8 +187,20 @@ let get_flags flags =
       (match find_flag flags "layers_style_loss" with
       | IntList x -> x
       | _ -> failwith "Internal error. ");
+    k =
+      (match find_flag flags "k" with
+      | Int x -> x
+      | _ -> failwith "Internal error. ");
+    sigma =
+      (match find_flag flags "sigma" with
+      | Float x -> x
+      | _ -> failwith "Internal error. ");
+    size =
+      (match find_flag flags "sigma" with
+      | Float x -> x
+      | _ -> failwith "Internal error. ");
   }
 
 let get_all_flags cmd = get_flags cmd.flags
-let get_output cmd = cmd.output
+let get_output cmd fix = determine_filename cmd.output fix
 let default = get_flags flags

@@ -1,10 +1,12 @@
 open Project
 open Command
+open Img
 
 let print_list f l =
   List.fold_left (fun _ y -> print_endline (f y)) () l
 
 let find name flags = List.find (fun (x, _) -> x = name) flags
+let tmp_file_loc name = "tmp" ^ Filename.dir_sep ^ name ^ ".jpg"
 
 let rec make () =
   print_string "> Content image: ";
@@ -20,8 +22,30 @@ let rec make () =
   let cmd =
     parse_command content style pre_trained_model flags output
   in
-  Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
-    (get_all_flags cmd) (get_output cmd);
+  let flgs = get_all_flags cmd in
+  let res = tmp_file_loc "resize" in
+  let gaus = tmp_file_loc "gaussian" in
+  let grad = tmp_file_loc "gradient" in
+  Sys.remove res;
+  Sys.remove gaus;
+  Sys.remove grad;
+  print_endline "Resizing image...";
+  demo_resize (get_content cmd) res flgs.size;
+  print_endline "Blurring...";
+  demo_gaussian (get_content cmd) gaus flgs.k flgs.sigma;
+  print_endline "Generating gradient...";
+  demo_gradient (get_content cmd) grad flgs.k flgs.sigma;
+  Nst.main (get_style cmd) res (get_model cmd) flgs
+    (get_output cmd "resize");
+  Nst.main (get_style cmd) gaus (get_model cmd) flgs
+    (get_output cmd "gaussian");
+  Nst.main (get_style cmd) grad (get_model cmd) flgs
+    (get_output cmd "gradient");
+  Sys.remove res;
+  Sys.remove gaus;
+  Sys.remove grad;
+  print_endline
+    ("Outputed to data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep);
   print_string "> ";
   start ()
 (* TODO: preprocess image + ml stuff. () |> make |> preprocessing |> ml
