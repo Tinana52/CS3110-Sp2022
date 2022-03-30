@@ -21,6 +21,10 @@ clean:
 	dune clean
 	rm -f project.zip
 
+remove: 
+	rm -r data/output
+	mkdir data/output
+
 doc:
 	dune build @doc
 
