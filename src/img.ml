@@ -84,6 +84,16 @@ let add a b =
   done;
   v
 
+let add_ave a b c =
+  let len1, len2 = (Array.length a, Array.length a.(0)) in
+  let v = Array.make_matrix len1 len2 0.0 in
+  for i = 0 to len1 - 1 do
+    for j = 0 to len2 - 1 do
+      v.(i).(j) <- (a.(i).(j) +. b.(i).(j) +. c.(i).(j)) /. 3.0
+    done
+  done;
+  v
+
 let part a init_x lenx init_y leny =
   let v = Array.make_matrix lenx leny 0.0 in
   for x = 0 to lenx - 1 do
@@ -326,25 +336,24 @@ let demo_gradient file_in file_out k sigma =
   let img_tensor =
     read_img_to_tensor_reshape file_in (old_size, old_size)
   in
+  (* normalize only works for tensor of 3 channels!!! *)
+  let normalized = img_tensor |> normalize in
   (* get the float array array array from the tensor *)
-  let img_3d_float = img_tensor |> Tensor.to_float3_exn in
+  let img_3d_float = normalized |> Tensor.to_float3_exn in
   (* [red_channel_2d] gets the first channel of the 3 channel layers *)
   let red_channel_2d = img_3d_float.(0) in
   let green_channel_2d = img_3d_float.(1) in
   let blue_channel_2d = img_3d_float.(2) in
-  let gradient_red_2d = gradient_magnitude red_channel_2d k sigma in
-  let gradient_green_2d = gradient_magnitude green_channel_2d k sigma in
-  let gradient_blue_2d = gradient_magnitude blue_channel_2d k sigma in
-  (* [img_3channel_float] is of size 3, 256, 256 *)
-  let img_3channel_float =
-    [| gradient_red_2d; gradient_green_2d; gradient_blue_2d |]
+  let grey_2d =
+    add_ave red_channel_2d green_channel_2d blue_channel_2d
   in
+  let gradient_2d = gradient_magnitude grey_2d k sigma in
+  (* [img_channel_float] is of size 3, 256, 256 *)
+  let img_channel_float = [| threshold 0.1 gradient_2d |] in
   (* get tensor from the 3d float, tensor_from_3d is <3,256,256> *)
-  let tensor_from_3d = img_3channel_float |> Tensor.of_float3 in
-  (* normalize only works for tensor of 3 channels!!! *)
-  let normalized = tensor_from_3d |> normalize in
+  let tensor_from_3d = img_channel_float |> Tensor.of_float3 in
   (* write to output, Imagenet.write_image only takes Tensor<3,wid,high>
      or Tensor<1,wid,high>*)
-  Imagenet.write_image ~filename:file_out normalized
+  Imagenet.write_image ~filename:file_out tensor_from_3d
 
 let main = ()
