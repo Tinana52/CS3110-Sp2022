@@ -26,14 +26,17 @@ let rec make () =
   let res = tmp_file_loc "resize" in
   let gaus = tmp_file_loc "gaussian" in
   let grad = tmp_file_loc "gradient" in
-  if Sys.file_exists res then Sys.remove res;
-  if Sys.file_exists gaus then Sys.remove gaus;
-  if Sys.file_exists grad then Sys.remove grad;
-  print_endline "Resizing image...";
+  (try
+     let _ = Sys.is_directory "tmp" in
+     let _ = Sys.command "rm -r tmp" in
+     ()
+   with Sys_error _ -> ());
+  let _ = Sys.command "mkdir tmp" in
+  print_endline "Resizing... ";
   demo_resize (get_content cmd) res flgs.size;
-  print_endline "Blurring...";
+  print_endline "Blurring... ";
   demo_gaussian (get_content cmd) gaus flgs.k flgs.sigma;
-  print_endline "Generating gradient...";
+  print_endline "Generating gradient... ";
   demo_gradient (get_content cmd) grad flgs.k flgs.sigma;
   Nst.main (get_style cmd) res (get_model cmd) flgs
     (get_output cmd "resize");
@@ -41,9 +44,7 @@ let rec make () =
     (get_output cmd "gaussian");
   Nst.main (get_style cmd) grad (get_model cmd) flgs
     (get_output cmd "gradient");
-  Sys.remove res;
-  Sys.remove gaus;
-  Sys.remove grad;
+  let _ = Sys.command "rm -r tmp" in
   print_endline
     ("Outputted to data" ^ Filename.dir_sep ^ "output"
    ^ Filename.dir_sep);
@@ -86,6 +87,10 @@ and start () =
         print_endline ("Invalid flag: " ^ f);
         print_string "> ";
         start ())
+  | "clean" ->
+      let _ = Sys.command "rm -r data/output && mkdir data/output" in
+      print_string "> ";
+      start ()
   | _ ->
       print_endline "Invalid command. ";
       print_string "> ";
