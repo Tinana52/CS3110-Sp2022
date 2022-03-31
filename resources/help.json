@@ -15,7 +15,7 @@
     {
       "flag": "total_steps",
       "arg_type": "int",
-      "default": 80,
+      "default": 180,
       "info": "total_steps"
     },
     {
