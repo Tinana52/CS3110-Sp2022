@@ -8,7 +8,14 @@ utop:
 	OCAMLRUNPARAM=b dune utop src
 
 test:
+	rm -r data/output
+	mkdir data/output
+	touch data/output/cmd.png
+	touch data/output/cmd0.png
+	touch data/output/cmd1.png
 	OCAMLRUNPARAM=b dune exec test/main.exe
+	rm -r data/output
+	mkdir data/output
 
 launch:
 	OCAMLRUNPARAM=b dune exec bin/main.exe
@@ -20,10 +27,9 @@ zip:
 clean:
 	dune clean
 	rm -f project.zip
-
-remove: 
-	rm -r data/output
+	rm -rf data/output
 	mkdir data/output
+	rm -rf tmp
 
 doc:
 	dune build @doc

@@ -4,6 +4,17 @@ exception Invalid_Flag of string
 exception TypeMismatch
 (** Raised when a wrong flag type is encountered. *)
 
+exception Invalid_Command of string
+(** Raised when an invalid command is encountered. *)
+
+(** The type [command] represents the parsed, user-inputted command. *)
+type command =
+  | Info
+  | Help of string
+  | Clean
+  | Quit
+  | Make
+
 type flags = {
   style_weight : float;
   learning_rate : float;
@@ -16,16 +27,20 @@ type flags = {
 }
 (** The type [flags] represents the arguments values. *)
 
-type command
-(** The type [command] includes data about the content image, style
+type make_file
+(** The type [make_file] includes data about the content image, style
     image, and optional arguments. *)
 
 val all_flags : string list
 (** [all_flags] is the list of all possible optional argument names. *)
 
-val parse_command :
-  string -> string -> string -> string -> string -> command
-(** [parse_command c s cmd] parses a user's input into a [command]. It
+val parse_input : string -> command
+(** [parse_input] parses the input string and returns the corresponding
+    command. *)
+
+val parse_make :
+  string -> string -> string -> string -> string -> make_file
+(** [parse_make c s m f o] parses a user's input into a [command]. It
     ignores any unnecessary spaces. Raises [Invalid_Flag] when an
     unexpected flag is encountered. Raises [TypeMismatch] if an optional
     argument has an incorrect type. *)
@@ -34,20 +49,20 @@ val flag_info : string -> string
 (** [flag_info s] returns the description of the flag [s]. Raises
     [Invalid_Flag] when an unexpected flag is encountered. *)
 
-val get_content : command -> string
+val get_content : make_file -> string
 (** [get_content cmd] returns the content image location in [cmd]. *)
 
-val get_style : command -> string
+val get_style : make_file -> string
 (** [get_style cmd] returns the style image location in [cmd]. *)
 
-val get_model : command -> string
+val get_model : make_file -> string
 (** [get_model cmd] returns the pre-trained model location in [cmd]. *)
 
-val get_all_flags : command -> flags
+val get_all_flags : make_file -> flags
 (** [get_all_flags cmd] returns a tuple of values of all arguments in
     [cmd]. *)
 
-val get_output : command -> string
+val get_output : make_file -> string
 (** [get_output cmd] returns the user-inputted output file name in
     [cmd]. *)
 

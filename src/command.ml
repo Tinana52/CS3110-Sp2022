@@ -1,6 +1,7 @@
 open Yojson.Basic.Util
 
 exception Invalid_Flag of string
+exception Invalid_Command of string
 exception TypeMismatch
 
 type flag_type =
@@ -29,7 +30,14 @@ type flags = {
   size : float;
 }
 
-type command = {
+type command =
+  | Info
+  | Help of string
+  | Clean
+  | Quit
+  | Make
+
+type make_file = {
   content : string;
   style : string;
   model : string;
@@ -96,6 +104,18 @@ let split_input str =
          (String.trim flag, String.trim value))
   |> List.sort (fun (x, _) (y, _) -> String.compare x y)
 
+let parse_input str =
+  str |> String.lowercase_ascii
+  |> String.split_on_char ' '
+  |> List.filter (( <> ) "")
+  |> function
+  | [ "help" ] -> Info
+  | "help" :: s -> Help (String.concat " " s)
+  | [ "clean" ] -> Clean
+  | [ "quit" ] -> Quit
+  | [ "make" ] -> Make
+  | s -> raise (Invalid_Command (String.concat " " s))
+
 let parse_value v flag =
   try
     {
@@ -126,26 +146,23 @@ let determine_filename name =
   "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
   ^ ".png"
 
-let parse_command content style model input_flags output =
+let rec parse_flags input default =
+  match (input, default) with
+  | (flg, v) :: t1, flag :: t2 ->
+      if flg = flag.name then parse_value v flag :: parse_flags t1 t2
+      else flag :: parse_flags ((flg, v) :: t1) t2
+  | (f, v) :: _, [] -> raise (Invalid_Flag f)
+  | [], l -> l
+
+let parse_make content style model input_flags output =
   {
     content = "data" ^ Filename.dir_sep ^ String.trim content ^ ".jpg";
     style = "data" ^ Filename.dir_sep ^ String.trim style ^ ".jpg";
     model = "resources" ^ Filename.dir_sep ^ String.trim model ^ ".ot";
     flags =
-      begin
-        let rec parse_flags input default =
-          match (input, default) with
-          | (flg, v) :: t1, flag :: t2 ->
-              if flg = flag.name then
-                parse_value v flag :: parse_flags t1 t2
-              else flag :: parse_flags ((flg, v) :: t1) t2
-          | (f, v) :: _, [] -> raise (Invalid_Flag f)
-          | [], l -> l
-        in
-        List.sort
-          (fun x y -> String.compare x.name y.name)
-          (parse_flags (split_input input_flags) flags)
-      end;
+      List.sort
+        (fun x y -> String.compare x.name y.name)
+        (parse_flags (split_input input_flags) flags);
     output =
       (let name = String.trim output in
        if name = "" then "art" else name);
@@ -165,40 +182,56 @@ let get_content cmd = cmd.content
 let get_style cmd = cmd.style
 let get_model cmd = cmd.model
 
+let get_style_weight flags =
+  match find_flag flags "style_weight" with
+  | Float x -> x
+  | _ -> failwith "Internal error. "
+
+let get_learning_rate flags =
+  match find_flag flags "learning_rate" with
+  | Float x -> x
+  | _ -> failwith "Internal error. "
+
+let get_total_steps flags =
+  match find_flag flags "total_steps" with
+  | Int x -> x
+  | _ -> failwith "Internal error. "
+
+let get_layers_content_loss flags =
+  match find_flag flags "layers_content_loss" with
+  | IntList x -> x
+  | _ -> failwith "Internal error. "
+
+let get_layers_style_loss flags =
+  match find_flag flags "layers_style_loss" with
+  | IntList x -> x
+  | _ -> failwith "Internal error. "
+
+let get_k flags =
+  match find_flag flags "k" with
+  | Int x -> x
+  | _ -> failwith "Internal error. "
+
+let flags_sigma flags =
+  match find_flag flags "sigma" with
+  | Float x -> x
+  | _ -> failwith "Internal error. "
+
+let get_size flags =
+  match find_flag flags "sigma" with
+  | Float x -> x
+  | _ -> failwith "Internal error. "
+
 let get_flags flags =
   {
-    style_weight =
-      (match find_flag flags "style_weight" with
-      | Float x -> x
-      | _ -> failwith "Internal error. ");
-    learning_rate =
-      (match find_flag flags "learning_rate" with
-      | Float x -> x
-      | _ -> failwith "Internal error. ");
-    total_steps =
-      (match find_flag flags "total_steps" with
-      | Int x -> x
-      | _ -> failwith "Internal error. ");
-    layers_content_loss =
-      (match find_flag flags "layers_content_loss" with
-      | IntList x -> x
-      | _ -> failwith "Internal error. ");
-    layers_style_loss =
-      (match find_flag flags "layers_style_loss" with
-      | IntList x -> x
-      | _ -> failwith "Internal error. ");
-    k =
-      (match find_flag flags "k" with
-      | Int x -> x
-      | _ -> failwith "Internal error. ");
-    sigma =
-      (match find_flag flags "sigma" with
-      | Float x -> x
-      | _ -> failwith "Internal error. ");
-    size =
-      (match find_flag flags "sigma" with
-      | Float x -> x
-      | _ -> failwith "Internal error. ");
+    style_weight = get_style_weight flags;
+    learning_rate = get_learning_rate flags;
+    total_steps = get_total_steps flags;
+    layers_content_loss = get_layers_content_loss flags;
+    layers_style_loss = get_layers_style_loss flags;
+    k = get_k flags;
+    sigma = flags_sigma flags;
+    size = get_size flags;
   }
 
 let get_all_flags cmd = get_flags cmd.flags

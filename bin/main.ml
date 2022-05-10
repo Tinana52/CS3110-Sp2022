@@ -32,38 +32,58 @@ let picture cmd =
   (* demo_gaussian grad gaus_style flgs.k flgs.sigma; *)
   Nst.main grad gaus_cont (get_model cmd) flgs (get_output cmd)
 
-let rec make () =
+let remove_tmp () =
+  let _ = Sys.command "rm -rf tmp" in
+  ()
+
+let read_content () =
   print_string "> Content image: ";
-  let content = read_line () in
+  read_line ()
+
+let read_style () =
   print_string "> Style image: ";
-  let style = read_line () in
+  read_line ()
+
+let read_model () =
   print_string "> Pre-trained model: ";
-  let pre_trained_model = read_line () in
+  read_line ()
+
+let read_flags () =
   print_string "> Flags: ";
-  let flags = read_line () in
+  read_line ()
+
+let read_output () =
   print_string "> Output file name: ";
-  let output = read_line () in
+  read_line ()
+
+let read_method () =
   print_endline "> Artwork or picture? [artwork/picture] ";
   print_string "> ";
-  let response = read_line () in
-  let cmd =
-    parse_command content style pre_trained_model flags output
-  in
-  if not (Sys.file_exists (get_content cmd)) then
-    raise (File_not_found (get_content cmd));
-  if not (Sys.file_exists (get_style cmd)) then
-    raise (File_not_found (get_style cmd));
-  if not (Sys.file_exists (get_model cmd)) then
-    raise (File_not_found (get_model cmd));
-  (try
-     let _ = Sys.is_directory "tmp" in
-     let _ = Sys.command "rm -r tmp" in
-     ()
-   with Sys_error _ -> ());
-  if response = "artwork" then artwork cmd
-  else if response = "picture" then picture cmd
+  read_line ()
+
+let exists get cmd =
+  if not (Sys.file_exists (get cmd)) then
+    raise (File_not_found (get cmd))
+
+let rec make () =
+  let content = read_content () in
+  let style = read_style () in
+  let pre_trained_model = read_model () in
+  let flags = read_flags () in
+  let output = read_output () in
+  let response = read_method () in
+  let cmd = parse_make content style pre_trained_model flags output in
+  exists get_content cmd;
+  exists get_style cmd;
+  exists get_model cmd;
+  if response = "artwork" then (
+    remove_tmp ();
+    artwork cmd)
+  else if response = "picture" then (
+    remove_tmp ();
+    picture cmd)
   else failwith "Invalid. ";
-  let _ = Sys.command "rm -r tmp" in
+  remove_tmp ();
   print_endline
     ("Output location: data" ^ Filename.dir_sep ^ "output"
    ^ Filename.dir_sep);
@@ -73,16 +93,21 @@ let rec make () =
    to be () in the end. *)
 
 and start () =
-  match read_line () with
+  match parse_input (read_line ()) with
   | exception End_of_file ->
       print_string "Critical error. ";
-      ()
-  | "quit" -> ()
-  | "help" ->
+      print_string "> ";
+      start ()
+  | exception Invalid_Command s ->
+      print_endline ("Invalid command: " ^ s);
+      print_string "> ";
+      start ()
+  | Quit -> ()
+  | Info ->
       print_list Fun.id all_flags;
       print_string "> ";
       start ()
-  | "make" -> (
+  | Make -> (
       try make () with
       | Invalid_Flag f ->
           print_endline ("Invalid flag: " ^ f);
@@ -100,22 +125,18 @@ and start () =
           print_endline s;
           print_string "> ";
           start ())
-  | cmd when String.length cmd > 4 && String.sub cmd 0 4 = "help" -> (
+  | Help s -> (
       try
-        print_endline
-          (flag_info (String.sub cmd 5 (String.length cmd - 5)));
+        print_endline (flag_info s);
         print_string "> ";
         start ()
       with Invalid_Flag f ->
         print_endline ("Invalid flag: " ^ f);
         print_string "> ";
         start ())
-  | "clean" ->
-      let _ = Sys.command "rm -r data/output && mkdir data/output" in
-      print_string "> ";
-      start ()
-  | _ ->
-      print_endline "Invalid command. ";
+  | Clean ->
+      let _ = Sys.command "rm -rf data/output && mkdir data/output" in
+      print_endline "Done. ";
       print_string "> ";
       start ()
 
