@@ -15,18 +15,18 @@
     {
       "flag": "total_steps",
       "arg_type": "int",
-      "default": 180,
+      "default": 50,
       "info": "total_steps"
     },
     {
       "flag": "layers_style_loss",
       "arg_type": "int list",
       "default": [
-        0,
         2,
-        5,
-        7,
-        10
+        10,
+        14,
+        21,
+        28
       ],
       "info": "layers_style_loss"
     },

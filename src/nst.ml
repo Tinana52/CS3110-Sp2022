@@ -5,9 +5,9 @@ open Loss
 
 let flags = ref Command.default
 
-let get_inputs_tensors cpu style_img_path content_img_path weight_path =
+let get_inputs_tensors model_name cpu style_img_path content_img_path weight_path =
   let model =
-    load_pretrained_vgg weight_path !flags.layers_style_loss
+    load_vgg_model model_name weight_path !flags.layers_style_loss
       !flags.layers_content_loss cpu
   in
   let style_img = load_style_img style_img_path cpu in
@@ -51,12 +51,12 @@ let training_nst
     Caml.Gc.full_major ()
   done
 
-let main style content model input_flags output =
+let main model_name style content model input_flags output =
   let () = flags := input_flags in
   let module Sys = Caml.Sys in
   let cpu = Device.cuda_if_available () in
   let model, style_img, content_img =
-    get_inputs_tensors cpu style content model
+    get_inputs_tensors model_name cpu style content model
   in
   let model_paras = Var_store.create ~name:"optim" ~device:cpu () in
   let image =

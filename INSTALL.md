@@ -9,8 +9,9 @@ Step 1: install required packages
 Step 2: install ocaml pytorch
 `opam install torch ANSITerminal`
 
-Step 3: download the pretrained VGG-16 weights from 
-https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg16.ot
+Step 3: download the pretrained weights from 
+vgg16: https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg16.ot
+vgg19: https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg19.ot
 and save the file in folder `/resources`
 
 To run the engine,
@@ -19,12 +20,13 @@ Content image can be either of:
 `cornell1` `cornell2` `cornell3`
 Style image should be `starry`
 Pre-trained model should be `vgg16`
-## For VGG16, the default flags that work:
-`-layers_style_loss [0,2,5,7,10]`
+## For both VGG19 and VGG16, the default flags that work:
+`-layers_style_loss [2,10,14,21,28]`
 `-layers_content_loss [7]`
 `-style_weight 1e6`
 `-learning_rate 1e-1`
 `-total_steps 80`
+
 ## We will update this list as soon as we add more pretrained models
 The default flags for filtering/resizing are:
 `-k 5`

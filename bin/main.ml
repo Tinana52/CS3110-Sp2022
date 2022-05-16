@@ -10,11 +10,11 @@ let print_list f l =
 let find name flags = List.find (fun (x, _) -> x = name) flags
 let tmp_file_loc name = "tmp" ^ Filename.dir_sep ^ name ^ ".jpg"
 
-let artwork cmd =
-  Nst.main (get_style cmd) (get_content cmd) (get_model cmd)
+let artwork model_name cmd =
+  Nst.main model_name (get_style cmd) (get_content cmd) (get_model cmd)
     (get_all_flags cmd) (get_output cmd)
 
-let picture cmd =
+let picture model_name cmd =
   let res_cont = tmp_file_loc "resize_style" in
   let flgs = get_all_flags cmd in
   let res_style = tmp_file_loc "resize_content" in
@@ -30,7 +30,7 @@ let picture cmd =
   print_endline "Blurring... ";
   demo_gaussian res_cont gaus_cont flgs.k flgs.sigma;
   (* demo_gaussian grad gaus_style flgs.k flgs.sigma; *)
-  Nst.main grad gaus_cont (get_model cmd) flgs (get_output cmd)
+  Nst.main model_name grad gaus_cont (get_model cmd) flgs (get_output cmd)
 
 let remove_tmp () =
   let _ = Sys.command "rm -rf tmp" in
@@ -72,16 +72,17 @@ let rec make () =
   let flags = read_flags () in
   let output = read_output () in
   let response = read_method () in
+  let model_name = pre_trained_model in
   let cmd = parse_make content style pre_trained_model flags output in
   exists get_content cmd;
   exists get_style cmd;
   exists get_model cmd;
   if response = "artwork" then (
     remove_tmp ();
-    artwork cmd)
+    artwork model_name cmd)
   else if response = "picture" then (
     remove_tmp ();
-    picture cmd)
+    picture model_name cmd)
   else failwith "Invalid. ";
   remove_tmp ();
   print_endline
