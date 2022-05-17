@@ -87,20 +87,24 @@ let command_tests =
        "learning rate"; flag_info_test "info of int_lst" "int_lst"
        "int_list"; flag_info_test "info of str_lst" "str_lst"
        "string_list"; *)
-    content_test "default content" cmd1 "data/default.jpg";
-    style_test "default style" cmd1 "data/default.jpg";
-    output_test "default output" cmd1 "data/output/art.png";
-    output_test "output file exists" cmd2 "data/output/cmd2.png";
-    output_test "customized output" cmd3 "data/output/cmd3.png";
-    parse_fail_flag "invalid flag causes parsing to fail" "-foo 10"
-      "foo";
-    parse_fail_flag "invalid flag causes parsing to fail"
+    content_test "#### Testing:  default content" cmd1
+      "data/default.jpg";
+    style_test "#### Testing:  default style" cmd1 "data/default.jpg";
+    output_test "#### Testing:  default output" cmd1
+      "data/output/art.png";
+    output_test "#### Testing:  output file exists" cmd2
+      "data/output/cmd2.png";
+    output_test "#### Testing:  customized output" cmd3
+      "data/output/cmd3.png";
+    parse_fail_flag "#### Testing:  invalid flag causes parsing to fail"
+      "-foo 10" "foo";
+    parse_fail_flag "#### Testing:  invalid flag causes parsing to fail"
       "-learning_rate 2.0 -foo 10" "foo";
-    parse_fail_type "wrong type causes parsing to fail 1"
+    parse_fail_type "#### Testing:  wrong type causes parsing to fail 1"
       "-learning_rate \"123\"";
-    parse_fail_type "wrong type causes parsing to fail 2"
+    parse_fail_type "#### Testing:  wrong type causes parsing to fail 2"
       "-learning_rate [1,2,3]";
-    parse_fail_type "wrong type causes parsing to fail 3"
+    parse_fail_type "#### Testing:  wrong type causes parsing to fail 3"
       "-learning_rate [1.0]";
     default_test;
   ]

@@ -5,7 +5,12 @@ open Loss
 
 let flags = ref Command.default
 
-let get_inputs_tensors model_name cpu style_img_path content_img_path weight_path =
+let get_inputs_tensors
+    model_name
+    cpu
+    style_img_path
+    content_img_path
+    weight_path =
   let model =
     load_vgg_model model_name weight_path !flags.layers_style_loss
       !flags.layers_content_loss cpu
@@ -48,7 +53,11 @@ let training_nst
         (Tensor.float_value style_loss)
         (Tensor.float_value content_loss)
     in
-    Caml.Gc.full_major ()
+    Caml.Gc.full_major ();
+    if iteration mod 5 = 0 then
+      let img_idx = iteration / 5 in
+      Imagenet.write_image input_var
+        ~filename:(Printf.sprintf "GIF_tmp/gif%04d.png" img_idx)
   done
 
 let main model_name style content model input_flags output =
@@ -71,6 +80,9 @@ let main model_name style content model input_flags output =
     Optimizer.adam model_paras ~learning_rate:!flags.learning_rate
   in
   let _ = Stdio.printf "Training begin for the new artwork \n%!" in
+  (* save the processed first image for gif *)
+  Imagenet.write_image image
+    ~filename:(Printf.sprintf "GIF_tmp/gif000.png");
   let _ =
     training_nst model image optimizer style_layers content_layers
       !flags.total_steps

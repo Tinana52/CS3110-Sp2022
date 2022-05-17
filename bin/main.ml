@@ -11,17 +11,44 @@ let find name flags = List.find (fun (x, _) -> x = name) flags
 let tmp_file_loc name = "tmp" ^ Filename.dir_sep ^ name ^ ".jpg"
 
 let artwork model_name cmd =
+  let _ = Sys.command "mkdir GIF_tmp" in
   Nst.main model_name (get_style cmd) (get_content cmd) (get_model cmd)
     (get_all_flags cmd) (get_output cmd)
 
+let artwork_resize_512 model_name cmd =
+  let res_cont = tmp_file_loc "resize_content" in
+  let flgs = get_all_flags cmd in
+  let res_style = tmp_file_loc "resize_style" in
+  let _ = Sys.command "mkdir tmp" in
+  let _ = Sys.command "mkdir GIF_tmp" in
+  print_endline "Resizing... ";
+  demo_resize_default (get_content cmd) res_cont;
+  demo_resize_default (get_style cmd) res_style;
+  print_endline "Blurring... ";
+  Nst.main model_name res_style res_cont (get_model cmd) flgs
+    (get_output cmd)
+
 let picture model_name cmd =
+  let flgs = get_all_flags cmd in
+  let gaus_cont = tmp_file_loc "gaussian_content" in
+  let grad = tmp_file_loc "gradient" in
+  let _ = Sys.command "mkdir tmp" in
+  let _ = Sys.command "mkdir GIF_tmp" in
+  print_endline "Generating gradient... ";
+  demo_gradient (get_style cmd) grad flgs.k flgs.sigma;
+  print_endline "Blurring... ";
+  demo_gaussian (get_content cmd) gaus_cont flgs.k flgs.sigma;
+  Nst.main model_name grad gaus_cont (get_model cmd) flgs
+    (get_output cmd)
+
+let picture_resize_512 model_name cmd =
   let res_cont = tmp_file_loc "resize_style" in
   let flgs = get_all_flags cmd in
   let res_style = tmp_file_loc "resize_content" in
   let gaus_cont = tmp_file_loc "gaussian_content" in
-  (* let gaus_style = tmp_file_loc "gaussian_style" in *)
   let grad = tmp_file_loc "gradient" in
   let _ = Sys.command "mkdir tmp" in
+  let _ = Sys.command "mkdir GIF_tmp" in
   print_endline "Resizing... ";
   demo_resize_default (get_content cmd) res_cont;
   demo_resize_default (get_style cmd) res_style;
@@ -29,11 +56,23 @@ let picture model_name cmd =
   demo_gradient res_style grad flgs.k flgs.sigma;
   print_endline "Blurring... ";
   demo_gaussian res_cont gaus_cont flgs.k flgs.sigma;
-  (* demo_gaussian grad gaus_style flgs.k flgs.sigma; *)
-  Nst.main model_name grad gaus_cont (get_model cmd) flgs (get_output cmd)
+  Nst.main model_name grad gaus_cont (get_model cmd) flgs
+    (get_output cmd)
 
 let remove_tmp () =
   let _ = Sys.command "rm -rf tmp" in
+  ()
+
+let remove_GIF_tmp () =
+  let _ = Sys.command "rm -rf GIF_tmp" in
+  ()
+
+let make_GIF cmd =
+  let output_name = get_gif_name cmd in
+  let output_gif_cmd =
+    "convert -delay 40 -loop 0 GIF_tmp/*.png " ^ output_name ^ ".gif"
+  in
+  let _ = Sys.command output_gif_cmd in
   ()
 
 let read_content () =
@@ -65,6 +104,17 @@ let exists get cmd =
   if not (Sys.file_exists (get cmd)) then
     raise (File_not_found (get cmd))
 
+let read_resize () =
+  print_endline "> Resize? [yes/no] ";
+  print_string "> ";
+  let s = read_line () in
+  if s = "yes" then true else false
+
+let remove_clean () = 
+  let _ = remove_tmp () in
+  let _ = remove_GIF_tmp () in
+  ()
+
 let rec make () =
   let content = read_content () in
   let style = read_style () in
@@ -77,14 +127,27 @@ let rec make () =
   exists get_content cmd;
   exists get_style cmd;
   exists get_model cmd;
-  if response = "artwork" then (
-    remove_tmp ();
-    artwork model_name cmd)
-  else if response = "picture" then (
-    remove_tmp ();
-    picture model_name cmd)
+  if response = "artwork" then
+    if read_resize () then begin
+      remove_clean ();
+      artwork_resize_512 model_name cmd
+    end
+    else begin
+      remove_clean ();
+      artwork model_name cmd;
+    end
+  else if response = "picture" then
+    if read_resize () then begin
+      remove_clean ();
+      picture_resize_512 model_name cmd
+    end
+    else begin
+      remove_clean ();
+      picture model_name cmd
+    end
   else failwith "Invalid. ";
-  remove_tmp ();
+  make_GIF cmd;
+  remove_clean ();
   print_endline
     ("Output location: data" ^ Filename.dir_sep ^ "output"
    ^ Filename.dir_sep);

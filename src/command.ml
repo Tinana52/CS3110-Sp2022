@@ -146,6 +146,18 @@ let determine_filename name =
   "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
   ^ ".png"
 
+let determine_gif_prefix name =
+  let counter = ref 0 in
+  let output = ref name in
+  while
+    Sys.file_exists
+      ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output)
+  do
+    output := name ^ string_of_int !counter;
+    incr counter
+  done;
+  "data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
+
 let rec parse_flags input default =
   match (input, default) with
   | (flg, v) :: t1, flag :: t2 ->
@@ -236,4 +248,7 @@ let get_flags flags =
 
 let get_all_flags cmd = get_flags cmd.flags
 let get_output cmd = determine_filename cmd.output
+
+let get_gif_name cmd = determine_gif_prefix cmd.output
+
 let default = get_flags flags

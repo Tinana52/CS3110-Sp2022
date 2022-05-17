@@ -4,7 +4,7 @@ Step 0: update system
 
 
 Step 1: install required packages
-`sudo apt install pkg-config libffi-dev zlib1g-dev`
+`sudo apt install pkg-config libffi-dev zlib1g-dev imagemagick`
 
 Step 2: install ocaml pytorch
 `opam install torch ANSITerminal`
@@ -16,10 +16,13 @@ and save the file in folder `/resources`
 
 To run the engine,
 `make launch`
-Content image can be either of:
-`cornell1` `cornell2` `cornell3`
-Style image should be `starry`
-Pre-trained model should be `vgg16`
+Content image can be any image (should be smaller than 1k otherwise likely out of memory)
+    - Here use `cornell` as an example
+Style image should be any image (should be smaller than 1k otherwise likely out of memory)
+    - Here use `starry` as an example
+
+Pre-trained model can be any vgg models,
+But currently Ocaml Torch only provides `vgg16.ot` and `vgg19.ot` for downloads
 ## For both VGG19 and VGG16, the default flags that work:
 `-layers_style_loss [2,10,14,21,28]`
 `-layers_content_loss [7]`
@@ -33,4 +36,6 @@ The default flags for filtering/resizing are:
 `-sigma 1.0`
 All of the flags are optional. To specify a flag value, use `-flag value`. The flags not specified will use the default values. 
 What we generated in MS1 is an "artwork". What we generated in MS2 is a "picture". The differences are explained in our progress report. 
+
 The output artwork is in `/data/output`
+The gif for correspond artwork is in `/data/output`

@@ -1,4 +1,4 @@
-let thomas = 20
-let canal = 23
-let canwen = 20
+let thomas = 40
+let canal = 43
+let canwen = 40
 let hours_worked = thomas + canal + canwen

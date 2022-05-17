@@ -66,6 +66,10 @@ val get_output : make_file -> string
 (** [get_output cmd] returns the user-inputted output file name in
     [cmd]. *)
 
+val get_gif_name : make_file -> string
+(** [get_gif_name cmd] returns the user-inputted output gif name in
+    [cmd]. *)
+
 val default : flags
 (** [default] is the default value of all flags read from the .json
     file. *)

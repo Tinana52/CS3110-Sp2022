@@ -3,19 +3,19 @@
     {
       "flag": "style_weight",
       "arg_type": "float",
-      "default": 1e6,
+      "default": 8e7,
       "info": "style weight"
     },
     {
       "flag": "learning_rate",
       "arg_type": "float",
-      "default": 1e-1,
+      "default": 8e-2,
       "info": "learning rate"
     },
     {
       "flag": "total_steps",
       "arg_type": "int",
-      "default": 50,
+      "default": 80,
       "info": "total_steps"
     },
     {
@@ -34,7 +34,7 @@
       "flag": "layers_content_loss",
       "arg_type": "int list",
       "default": [
-        7
+        21
       ],
       "info": "layers_content_loss"
     },
