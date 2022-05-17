@@ -1,8 +1,8 @@
 open Yojson.Basic.Util
 
-exception Invalid_Flag of string
-exception Invalid_Command of string
-exception TypeMismatch
+exception Invalid_flag of string
+exception Invalid_command of string
+exception Type_mismatch
 
 type flag_type =
   | Int of int
@@ -95,7 +95,7 @@ let split_input str =
   |> List.map (fun x ->
          let space =
            try String.index x ' '
-           with Not_found -> raise (Invalid_Flag x)
+           with Not_found -> raise (Invalid_flag x)
          in
          let flag = String.sub x 0 space in
          let value =
@@ -114,7 +114,7 @@ let parse_input str =
   | [ "clean" ] -> Clean
   | [ "quit" ] -> Quit
   | [ "make" ] -> Make
-  | s -> raise (Invalid_Command (String.concat " " s))
+  | s -> raise (Invalid_command (String.concat " " s))
 
 let parse_value v flag =
   try
@@ -128,9 +128,9 @@ let parse_value v flag =
         | "int list" -> list_of_string v "int list"
         | "float list" -> list_of_string v "float list"
         | "string list" -> list_of_string v "string list"
-        | _ -> raise (Invalid_Flag flag.name));
+        | _ -> raise (Invalid_flag flag.name));
     }
-  with Failure _ -> raise TypeMismatch
+  with Failure _ -> raise Type_mismatch
 
 let determine_filename name =
   let counter = ref 0 in
@@ -163,7 +163,7 @@ let rec parse_flags input default =
   | (flg, v) :: t1, flag :: t2 ->
       if flg = flag.name then parse_value v flag :: parse_flags t1 t2
       else flag :: parse_flags ((flg, v) :: t1) t2
-  | (f, v) :: _, [] -> raise (Invalid_Flag f)
+  | (f, v) :: _, [] -> raise (Invalid_flag f)
   | [], l -> l
 
 let parse_make content style model input_flags output =
@@ -186,7 +186,7 @@ let all_flags =
 let flag_info flag =
   let f =
     try List.find (fun x -> x.name = flag) flags
-    with Not_found -> raise (Invalid_Flag flag)
+    with Not_found -> raise (Invalid_flag flag)
   in
   f.info
 
@@ -248,7 +248,5 @@ let get_flags flags =
 
 let get_all_flags cmd = get_flags cmd.flags
 let get_output cmd = determine_filename cmd.output
-
 let get_gif_name cmd = determine_gif_prefix cmd.output
-
 let default = get_flags flags

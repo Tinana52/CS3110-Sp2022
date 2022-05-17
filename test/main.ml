@@ -54,19 +54,34 @@ let parse_fail_type name flags =
   name >:: fun _ ->
   assert_raises TypeMismatch (fun () -> parse_make "" "" "" flags "")
 
-let default_test =
-  "default flag values" >:: fun _ ->
-  assert_equal default
-    {
-      style_weight = 1e6;
-      learning_rate = 1e-1;
-      total_steps = 180;
-      layers_style_loss = [ 0; 2; 5; 7; 10 ];
-      layers_content_loss = [ 7 ];
-      k = 5;
-      sigma = 1.0;
-      size = 1.0;
-    }
+let default_style_weight_test =
+  "default style weight" >:: fun _ ->
+  assert_equal default.style_weight 1e6
+
+let default_learning_rate_test =
+  "default style weight" >:: fun _ ->
+  assert_equal default.learning_rate 1e-1
+
+let default_total_steps_test =
+  "default style weight" >:: fun _ ->
+  assert_equal default.total_steps 180
+
+let default_layers_style_loss_test =
+  "default style weight" >:: fun _ ->
+  assert_equal default.layers_style_loss [ 0; 2; 5; 7; 10 ]
+
+let default_layers_content_loss_test =
+  "default style weight" >:: fun _ ->
+  assert_equal default.layers_content_loss [ 7 ]
+
+let default_k_test =
+  "default style weight" >:: fun _ -> assert_equal default.k 5
+
+let default_sigma_test =
+  "default style weight" >:: fun _ -> assert_equal default.sigma 1.0
+
+let default_size_test =
+  "default style weight" >:: fun _ -> assert_equal default.size 1.0
 
 let cmd1 = parse_make "default" "default" "vgg16" "" ""
 
@@ -82,11 +97,19 @@ let cmd3 =
 let command_tests =
   [
     all_flags_test;
-    (* flag_info_test "info of style_weight" "style_weight" "style
-       weight"; flag_info_test "info of learning_rate" "learning_rate"
-       "learning rate"; flag_info_test "info of int_lst" "int_lst"
-       "int_list"; flag_info_test "info of str_lst" "str_lst"
-       "string_list"; *)
+    flag_info_test "#### Testing:  info of style_weight" "style_weight"
+      "style weight";
+    flag_info_test "#### Testing:  info of learning_rate"
+      "learning_rate" "learning rate";
+    flag_info_test "#### Testing:  info of total_steps" "total_steps"
+      "total_steps";
+    flag_info_test "#### Testing:  info of layer_style_loss"
+      "layers_style_loss" "layers_style_loss";
+    flag_info_test "#### Testing:  info of layer_content_loss"
+      "layers_content_loss" "layers_content_loss";
+    flag_info_test "#### Testing:  info of k" "k" "k";
+    flag_info_test "#### Testing:  info of sigma" "sigma" "sigma";
+    flag_info_test "#### Testing:  info of size" "size" "size";
     content_test "#### Testing:  default content" cmd1
       "data/default.jpg";
     style_test "#### Testing:  default style" cmd1 "data/default.jpg";
@@ -106,7 +129,14 @@ let command_tests =
       "-learning_rate [1,2,3]";
     parse_fail_type "#### Testing:  wrong type causes parsing to fail 3"
       "-learning_rate [1.0]";
-    default_test;
+    default_style_weight_test;
+    default_learning_rate_test;
+    default_total_steps_test;
+    default_layers_style_loss_test;
+    default_layers_content_loss_test;
+    default_k_test;
+    default_sigma_test;
+    default_size_test;
   ]
 
 let suite = "test suite for project" >::: List.flatten [ command_tests ]

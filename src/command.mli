@@ -1,10 +1,10 @@
-exception Invalid_Flag of string
+exception Invalid_flag of string
 (** Raised when a wrong flag is encountered. *)
 
-exception TypeMismatch
+exception Type_mismatch
 (** Raised when a wrong flag type is encountered. *)
 
-exception Invalid_Command of string
+exception Invalid_command of string
 (** Raised when an invalid command is encountered. *)
 
 (** The type [command] represents the parsed, user-inputted command. *)

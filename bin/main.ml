@@ -3,6 +3,7 @@ open Command
 open Img
 
 exception File_not_found of string
+exception Invalid_method of string
 
 let print_list f l =
   List.fold_left (fun _ y -> print_endline (f y)) () l
@@ -108,9 +109,11 @@ let read_resize () =
   print_endline "> Resize? [yes/no] ";
   print_string "> ";
   let s = read_line () in
-  if s = "yes" then true else false
+  if s = "yes" then true
+  else if s = "no" then false
+  else raise (Invalid_method s)
 
-let remove_clean () = 
+let remove_clean () =
   let _ = remove_tmp () in
   let _ = remove_GIF_tmp () in
   ()
@@ -134,7 +137,7 @@ let rec make () =
     end
     else begin
       remove_clean ();
-      artwork model_name cmd;
+      artwork model_name cmd
     end
   else if response = "picture" then
     if read_resize () then begin
@@ -145,7 +148,7 @@ let rec make () =
       remove_clean ();
       picture model_name cmd
     end
-  else failwith "Invalid. ";
+  else raise (Invalid_method response);
   make_GIF cmd;
   remove_clean ();
   print_endline
@@ -162,8 +165,12 @@ and start () =
       print_string "Critical error. ";
       print_string "> ";
       start ()
-  | exception Invalid_Command s ->
+  | exception Invalid_command s ->
       print_endline ("Invalid command: " ^ s);
+      print_string "> ";
+      start ()
+  | exception Invalid_method s ->
+      print_endline ("Invalid: " ^ s);
       print_string "> ";
       start ()
   | Quit -> ()
@@ -173,11 +180,11 @@ and start () =
       start ()
   | Make -> (
       try make () with
-      | Invalid_Flag f ->
+      | Invalid_flag f ->
           print_endline ("Invalid flag: " ^ f);
           print_string "> ";
           start ()
-      | TypeMismatch ->
+      | Type_mismatch ->
           print_endline "Incorrect arguent type. ";
           print_string "> ";
           start ()
@@ -194,7 +201,7 @@ and start () =
         print_endline (flag_info s);
         print_string "> ";
         start ()
-      with Invalid_Flag f ->
+      with Invalid_flag f ->
         print_endline ("Invalid flag: " ^ f);
         print_string "> ";
         start ())
