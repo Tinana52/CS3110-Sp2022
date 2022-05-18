@@ -247,10 +247,7 @@ let fnormalize img =
 
 (* ############## ABOVE ARE FILTER FUNCTIONS ############## *)
 
-(* [img_resize file_in file_out size] Resize the input img named
-   file_in (e.g. "data/cornell1.jpg") by making it 'size' times
-   bigger/smaller and output as file_out. The input 'size' should be
-   float. *)
+
 let img_resize file_in file_out size =
   let old_size_w =
     read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
@@ -272,9 +269,7 @@ let img_resize file_in file_out size =
   (* write to output *)
   Imagenet.write_image ~filename:file_out normalized
 
-(* [blur_gaussian file_in file_out k sigma] Blur input image named
-   file_in by applying the k x k gaussian filter with standard deviation
-   sigma, and output as file_out. Assume k is odd, sigma is float. *)
+
 let blur_gaussian file_in file_out k sigma =
   let old_size_w =
     read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
@@ -309,7 +304,7 @@ let blur_gaussian file_in file_out k sigma =
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out normalized
 
-(* [gradient_graph file_in file_out k sigma] Process input image named
+(** [gradient_graph file_in file_out k sigma] Process input image named
    file_in by Computing the gradient magnitude at each pixel. If sigma
    >0, smooth the image with a gaussian first, and output as file_out.
    Assume k is odd, sigma is float. *)
@@ -345,8 +340,8 @@ let gradient_graph file_in file_out k sigma =
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out tensor_from_3d
 
-(* [img_resize_default file_in file_out] Same as [img_resize file_in
-   file_out size] except always resize to 512 * 512 img. *)
+ 
+
 let img_resize_default file_in file_out =
   let img_tensor = read_img_to_tensor_reshape file_in (512, 512) in
   (* get the float array array array from the tensor *)
@@ -358,6 +353,9 @@ let img_resize_default file_in file_out =
   (* write to output *)
   Imagenet.write_image ~filename:file_out normalized
 
+(** [get_full_img file_in file_out] reads and stores the exactly same
+    image of the input file at [file_out]. This function is only used
+    for debugging gradient graph*)
 let get_full_img file_in file_out =
   (* get the tensor, for example Tensor<3,1024,1024> from the image *)
   let img_tensor = read_img_to_tensor_reshape file_in (1024, 1024) in
@@ -370,6 +368,9 @@ let get_full_img file_in file_out =
   (* write to output *)
   Imagenet.write_image ~filename:file_out normalized
 
+(** [get_one_channel file_in file_out] reads and stores the Red channel
+    of the input file at [file_out]. This function is only used for
+    debugging gradient graph*)
 let get_one_channel file_in file_out =
   (* get the tensor, for example Tensor<3,256,256> from the image *)
   let img_tensor = read_img_to_tensor_reshape file_in (256, 256) in
