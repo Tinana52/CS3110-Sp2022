@@ -151,7 +151,8 @@ let determine_gif_prefix name =
   let output = ref name in
   while
     Sys.file_exists
-      ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output)
+      ("data" ^ Filename.dir_sep ^ "output" ^ Filename.dir_sep ^ !output
+     ^ ".gif")
   do
     output := name ^ string_of_int !counter;
     incr counter

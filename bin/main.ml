@@ -127,6 +127,8 @@ let rec make () =
   let response = read_method () in
   let model_name = pre_trained_model in
   let cmd = parse_make content style pre_trained_model flags output in
+  if model_name <> "vgg16" && model_name <> "vgg19" then
+    raise (Invalid_method model_name);
   exists get_content cmd;
   exists get_style cmd;
   exists get_model cmd;
@@ -169,10 +171,6 @@ and start () =
       print_endline ("Invalid command: " ^ s);
       print_string "> ";
       start ()
-  | exception Invalid_method s ->
-      print_endline ("Invalid: " ^ s);
-      print_string "> ";
-      start ()
   | Quit -> ()
   | Info ->
       print_list Fun.id all_flags;
@@ -180,6 +178,10 @@ and start () =
       start ()
   | Make -> (
       try make () with
+      | Invalid_method s ->
+          print_endline ("Invalid: " ^ s);
+          print_string "> ";
+          start ()
       | Invalid_flag f ->
           print_endline ("Invalid flag: " ^ f);
           print_string "> ";

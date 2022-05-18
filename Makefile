@@ -13,6 +13,9 @@ test:
 	touch data/output/cmd.png
 	touch data/output/cmd0.png
 	touch data/output/cmd1.png
+	touch data/output/cmd.gif
+	touch data/output/cmd0.gif
+	touch data/output/cmd1.gif
 	OCAMLRUNPARAM=b dune exec test/main.exe
 	rm -r data/output
 	mkdir data/output

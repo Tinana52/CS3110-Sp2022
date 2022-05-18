@@ -1,3 +1,5 @@
+(** This is the parser for user inputs. *)
+
 exception Invalid_flag of string
 (** Raised when a wrong flag is encountered. *)
 
@@ -40,10 +42,11 @@ val parse_input : string -> command
 
 val parse_make :
   string -> string -> string -> string -> string -> make_file
-(** [parse_make c s m f o] parses a user's input into a [command]. It
-    ignores any unnecessary spaces. Raises [Invalid_Flag] when an
-    unexpected flag is encountered. Raises [TypeMismatch] if an optional
-    argument has an incorrect type. *)
+(** [parse_make c s m f o] parses a user's input into a [make_file]. It
+    ignores any unnecessary spaces. Requires: [m] is either ["vgg16"] or
+    ["vgg19"]. Raises [Invalid_Flag] when an unexpected flag is
+    encountered. Raises [TypeMismatch] if an optional argument has an
+    incorrect type. *)
 
 val flag_info : string -> string
 (** [flag_info s] returns the description of the flag [s]. Raises
