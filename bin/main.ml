@@ -19,6 +19,11 @@ let remove_GIF_tmp () =
   let _ = Sys.command "rm -rf GIF_tmp" in
   ()
 
+let remove_clean () =
+  let _ = remove_tmp () in
+  let _ = remove_GIF_tmp () in
+  ()
+
 let make_GIF cmd =
   let output_name = get_gif_name cmd in
   let output_gif_cmd =
@@ -63,11 +68,6 @@ let read_resize () =
   if s = "yes" then true
   else if s = "no" then false
   else raise (Invalid_method s)
-
-let remove_clean () =
-  let _ = remove_tmp () in
-  let _ = remove_GIF_tmp () in
-  ()
 
 let rec make () =
   let content = read_content () in

@@ -11,7 +11,7 @@ val artwork : string -> Command.make_file -> unit
     to much smaller than 1 if the style image is too large*)
 
 val artwork_resize_512 : string -> Command.make_file -> unit
-(** [artwork_resize_512 model_name cmd] creates the style transferred
+(** [artwork_resize_512 model_name cmd]     creates the style transferred
     artwork, in the with size (512x512), transformed with the resized
     style image with size (512x512) and content image resized to size
     (512x512). This option is to enable getting results faster since the

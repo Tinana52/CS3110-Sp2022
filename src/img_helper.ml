@@ -43,11 +43,9 @@ let print_shape tensor =
   Stdio.print_endline
     ("The shape of this tensor is: " ^ get_shape_str tensor)
 
-
 let read_img_to_tensor (filename : string) : Tensor.t =
   Imagenet.load_image_no_resize_and_crop filename
   |> unnormalize |> Tensor.to_list |> List.hd
-
 
 let read_img_to_tensor_reshape (filename : string) (size : int * int) :
     Tensor.t =

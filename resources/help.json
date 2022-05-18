@@ -47,13 +47,13 @@
     {
       "flag": "sigma",
       "arg_type": "float",
-      "default": 0.75,
+      "default": 1.2,
       "info": "sigma"
     },
     {
       "flag": "size",
       "arg_type": "float",
-      "default": 1.0,
+      "default": 0.5,
       "info": "size"
     }
   ]

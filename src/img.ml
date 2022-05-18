@@ -247,7 +247,6 @@ let fnormalize img =
 
 (* ############## ABOVE ARE FILTER FUNCTIONS ############## *)
 
-
 let img_resize file_in file_out size =
   let old_size_w =
     read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
@@ -268,7 +267,6 @@ let img_resize file_in file_out size =
   let normalized = tensor_from_3d |> normalize in
   (* write to output *)
   Imagenet.write_image ~filename:file_out normalized
-
 
 let blur_gaussian file_in file_out k sigma =
   let old_size_w =
@@ -304,10 +302,6 @@ let blur_gaussian file_in file_out k sigma =
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out normalized
 
-(** [gradient_graph file_in file_out k sigma] Process input image named
-   file_in by Computing the gradient magnitude at each pixel. If sigma
-   >0, smooth the image with a gaussian first, and output as file_out.
-   Assume k is odd, sigma is float. *)
 let gradient_graph file_in file_out k sigma =
   let old_size_w =
     read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
@@ -339,8 +333,6 @@ let gradient_graph file_in file_out k sigma =
   (* write to output, Imagenet.write_image only takes Tensor<3,wid,high>
      or Tensor<1,wid,high>*)
   Imagenet.write_image ~filename:file_out tensor_from_3d
-
- 
 
 let img_resize_default file_in file_out =
   let img_tensor = read_img_to_tensor_reshape file_in (512, 512) in
