@@ -1,10 +1,26 @@
-(** The following features are tested in this file: 1. Default values
-    for the flags 2. The information about the flags 3. Parsing valid
+(** The following features are tested in this file with glass-box
+    testing method as well as randomized cases: 1. Default values for
+    the flags 2. The information about the flags 3. Parsing valid
     inputted commands 4. Parsing invalid inputted commands 5. For
-    functions with img as input and output: check img size
+    functions with img as input and output: check img size.
+
+    By using glass-box testing, we tested the series of expressions that
+    is conditionally evaluated based on if-expressions,
+    match-expressions, and function applications. In other words, our
+    test cases are path-complete.
+
+    For the Ocaml-Torch related testing, it's not possible to create
+    testcases specifically for the tensors in the network, because 1)
+    the optimzation/backpropo is determined by autogradient calculation,
+    and would be extremely difficult to derive manually; 2) the neural
+    network is more a black box, the best way to test it is imperatively
+    running examples and mointor outputs. We included a bunch of utility
+    functions in img.ml and img_helper.ml so we can monitor the shapes
+    of different layers by printing the tensors' shapes.
 
     The following features are not tested in this file: 1. User
-    interface *)
+    interface, for which we manually tested by play around with our
+    engine. *)
 
 open OUnit2
 open Project
@@ -38,6 +54,14 @@ let all_flags_test =
 
 let remove_tmp () =
   let _ = Sys.command "rm -rf tmp" in
+  ()
+
+let make_output () =
+  let _ = Sys.command "mkdir data/output" in
+  ()
+
+let remove_output () =
+  let _ = Sys.command "rm -rf data/output" in
   ()
 
 let remove_GIF_tmp () =
@@ -94,7 +118,7 @@ let default_learning_rate_test =
   assert_equal default.learning_rate 8e-2
 
 let default_total_steps_test =
-  "default total steps" >:: fun _ -> assert_equal default.total_steps 80
+  "default total steps" >:: fun _ -> assert_equal default.total_steps 30
 
 let default_layers_style_loss_test =
   "default layers style loss" >:: fun _ ->
@@ -107,21 +131,19 @@ let default_layers_content_loss_test =
 let default_k_test = "default k" >:: fun _ -> assert_equal default.k 5
 
 let default_sigma_test =
-  "default sigma" >:: fun _ -> assert_equal default.sigma 1.0
-
-let default_size_test =
-  "default size" >:: fun _ -> assert_equal default.size 1.0
+  "default sigma" >:: fun _ -> assert_equal default.sigma 1.2
 
 let cmd1 = parse_make "default" "default" "vgg16" "" ""
 
 let test_cmd1 =
   [
-    content_test "content cmd1" cmd1 "data/default.jpg";
-    style_test "style cmd1" cmd1 "data/default.jpg";
-    flags_test "flags cmd1" cmd1 default;
-    output_test "output cmd1" cmd1 "data/output/art.png";
-    model_test "model cmd1" cmd1 "resources/vgg16.ot";
-    gif_test "gif cmd1" cmd1 "data/output/art";
+    content_test "testing for cmd: content cmd1" cmd1 "data/default.jpg";
+    style_test "testing for cmd: style cmd1" cmd1 "data/default.jpg";
+    flags_test "testing for cmd: flags cmd1" cmd1 default;
+    output_test "testing for cmd: output cmd1" cmd1
+      "data/output/art.png";
+    model_test "testing for cmd: model cmd1" cmd1 "resources/vgg16.ot";
+    gif_test "testing for cmd: gif cmd1" cmd1 "data/output/art";
   ]
 
 let cmd2 =
@@ -129,12 +151,14 @@ let cmd2 =
 
 let test_cmd2 =
   [
-    content_test "content cmd2" cmd2 "data/default.jpg";
-    style_test "style cmd2" cmd2 "data/default.jpg";
-    flags_test "flags cmd2" cmd2 { default with learning_rate = 2.0 };
-    output_test "output cmd2" cmd2 "data/output/cmd2.png";
-    model_test "model cmd2" cmd2 "resources/vgg16.ot";
-    gif_test "gif cmd2" cmd2 "data/output/cmd2";
+    content_test "testing for cmd: content cmd2" cmd2 "data/default.jpg";
+    style_test "testing for cmd: style cmd2" cmd2 "data/default.jpg";
+    flags_test "testing for cmd: flags cmd2" cmd2
+      { default with learning_rate = 2.0 };
+    output_test "testing for cmd: output cmd2" cmd2
+      "data/output/cmd2.png";
+    model_test "testing for cmd: model cmd2" cmd2 "resources/vgg16.ot";
+    gif_test "testing for cmd: gif cmd2" cmd2 "data/output/cmd2";
   ]
 
 let cmd3 =
@@ -145,9 +169,10 @@ let cmd3 =
 
 let test_cmd3 =
   [
-    content_test "content cmd3" cmd3 "data/default.jpg";
-    style_test "style cmd3" cmd3 "data/default.jpg";
-    flags_test "flags cmd3" cmd3
+    content_test "testing for cmd: content cmd3, expected default.jpg"
+      cmd3 "data/default.jpg";
+    style_test "testing for cmd:  style cmd3" cmd3 "data/default.jpg";
+    flags_test "testing for cmd: flags cmd3" cmd3
       {
         default with
         layers_style_loss = [ 1; 2; 3; 5; 8 ];
@@ -156,9 +181,68 @@ let test_cmd3 =
         learning_rate = 10.;
         total_steps = 100;
       };
-    output_test "output cmd3" cmd3 "data/output/cmd3.png";
-    model_test "model cmd3" cmd3 "resources/vgg19.ot";
-    gif_test "gif cmd3" cmd3 "data/output/cmd3";
+    output_test "testing for cmd: output cmd3" cmd3
+      "data/output/cmd3.png";
+    model_test "testing for cmd: model cmd3" cmd3 "resources/vgg19.ot";
+    gif_test "testing for cmd: gif cmd3" cmd3 "data/output/cmd3";
+  ]
+
+let cmd4 =
+  parse_make "default" "default" "vgg19" "-learning_rate 0.5" "cmd4"
+
+let test_cmd4 =
+  [
+    content_test "content cmd4" cmd4 "data/default.jpg";
+    style_test "style cmd4" cmd4 "data/default.jpg";
+    output_test "output cmd4" cmd4 "data/output/cmd4.png";
+    model_test "model cmd4" cmd4 "resources/vgg19.ot";
+    gif_test "gif cmd4" cmd4 "data/output/cmd4";
+  ]
+
+let cmd5 =
+  parse_make "default" "default" "vgg19"
+    "-layers_style_loss [2, 10, 14] -layers_content_loss [2] \
+     -style_weight 2e7 -learning_rate 0.1 -total_steps 150"
+    "cmd5"
+
+let test_cmd5 =
+  [
+    content_test "testing for cmd: content cmd5, expected default.jpg"
+      cmd5 "data/default.jpg";
+    style_test "testing for cmd: style cmd5, expected default.jpg" cmd5
+      "data/default.jpg";
+    flags_test "testing for cmd: flags cmd5" cmd5
+      {
+        default with
+        layers_style_loss = [ 2; 10; 14 ];
+        layers_content_loss = [ 2 ];
+        style_weight = 2e7;
+        learning_rate = 0.1;
+        total_steps = 150;
+      };
+    output_test "testing for cmd: output cmd5" cmd5
+      "data/output/cmd5.png";
+    model_test "testing for cmd: model cmd5, expected vgg19.ot" cmd5
+      "resources/vgg19.ot";
+    gif_test "testing for cmd: gif cmd5, expected cmd5" cmd5
+      "data/output/cmd5";
+  ]
+
+let cmd6 = parse_make "default" "default" "vgg19" "" ""
+
+let test_cmd6 =
+  [
+    content_test "testing for cmd: content cmd6, expected default.jpg"
+      cmd6 "data/default.jpg";
+    style_test "testing for cmd: style cmd6, expected default.jpg" cmd6
+      "data/default.jpg";
+    flags_test "testing for cmd: flags cmd6" cmd6 default;
+    output_test "testing for cmd: output cmd6, expected art.png" cmd6
+      "data/output/art.png";
+    model_test "testing for cmd: model cmd6, expected vgg19.ot" cmd6
+      "resources/vgg19.ot";
+    gif_test "testing for cmd: gif cmd6, expected art" cmd6
+      "data/output/art";
   ]
 
 let file_in = "data/cornell.jpg"
@@ -184,15 +268,15 @@ let img_resize_width_test =
   let _ = img_resize file_in file_out 2.0 in
   assert_equal (read_img_to_tensor file_out |> get_img_size_width) 2000
 
-let blur_gaussian_height_test =
-  "blur_gaussian should not change img height" >:: fun _ ->
-  let _ = blur_gaussian file_in file_out 5 0.75 in
-  assert_equal (read_img_to_tensor file_out |> get_img_size_height) 563
-
 let blur_gaussian_width_test =
   "blur_gaussian should not change img width" >:: fun _ ->
   let _ = blur_gaussian file_in file_out 5 0.75 in
   assert_equal (read_img_to_tensor file_out |> get_img_size_width) 1000
+
+let blur_gaussian_height_test =
+  "blur_gaussian should not change img width" >:: fun _ ->
+  let _ = blur_gaussian file_in file_out 5 0.75 in
+  assert_equal (read_img_to_tensor file_out |> get_img_size_height) 563
 
 let gradient_graph_height_test =
   "gradient_graph should not change img height" >:: fun _ ->
@@ -204,8 +288,9 @@ let gradient_graph_width_test =
   let _ = gradient_graph file_in file_out 5 0.75 in
   assert_equal (read_img_to_tensor file_out |> get_img_size_width) 1000
 
-let command_tests =
-  test_cmd1 @ test_cmd2 @ test_cmd3
+(* ######################################################################### *)
+let command_tests1 =
+  test_cmd1 @ test_cmd2 @ test_cmd3 @ test_cmd4 @ test_cmd5 @ test_cmd6
   @ [
       all_flags_test;
       flag_info_test "#### Testing:  info of style_weight"
@@ -229,6 +314,12 @@ let command_tests =
         "-learning_rate 2.0 -foo 10" "foo";
       parse_fail_flag
         "#### Testing:  invalid flag causes parsing to fail"
+        "-size 2.0 -sss 10" "sss";
+      parse_fail_flag
+        "#### Testing:  invalid flag causes parsing to fail"
+        "-size 2.0 -test lll" "test";
+      parse_fail_flag
+        "#### Testing:  invalid flag causes parsing to fail"
         "-bar 10      learning_rate 2.0 " "bar";
       parse_fail_type
         "#### Testing:  wrong type causes parsing to fail 1"
@@ -244,9 +335,8 @@ let command_tests =
       default_total_steps_test;
       default_layers_style_loss_test;
       default_layers_content_loss_test;
-      default_k_test
-      (* default_sigma_test; *)
-      (* default_size_test; *);
+      default_k_test;
+      default_sigma_test;
     ]
 
 let resize_test =
@@ -263,6 +353,11 @@ let resize_test =
 
 let suite =
   "test suite for project"
-  >::: List.flatten [ command_tests; resize_test ]
+  >::: List.flatten [ command_tests1; resize_test ]
 
-let _ = run_test_tt_main suite; remove_clean ()
+let _ =
+  remove_clean ();
+  run_test_tt_main suite;
+  remove_clean ();
+ 
+ 
