@@ -4,5 +4,4 @@ _build/*
 *.ot
 .vscode/*
 .git/*
-*.png
 .gitignore
