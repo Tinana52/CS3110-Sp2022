@@ -281,12 +281,16 @@ let fnormalize img =
    bigger/smaller and output as file_out. The input 'size' should be
    float. *)
 let demo_resize file_in file_out size =
-  let old_size =
-    read_img_to_tensor file_in |> get_img_size |> Float.of_int
+  let old_size_w =
+    read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
+  in
+  let old_size_H =
+    read_img_to_tensor file_in |> get_img_size_height |> Float.of_int
   in
   let img_tensor =
     read_img_to_tensor_reshape file_in
-      (Float.to_int (old_size *. size), Float.to_int (old_size *. size))
+      ( Float.to_int (old_size_w *. size),
+        Float.to_int (old_size_H *. size) )
   in
   (* get the float array array array from the tensor *)
   let img_3d_float = img_tensor |> Tensor.to_float3_exn in
@@ -301,9 +305,16 @@ let demo_resize file_in file_out size =
    file_in by applying the k x k gaussian filter with standard deviation
    sigma, and output as file_out. Assume k is odd, sigma is float. *)
 let demo_gaussian file_in file_out k sigma =
-  let old_size = read_img_to_tensor file_in |> get_img_size in
+  let old_size_w =
+    read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
+  in
+  let old_size_H =
+    read_img_to_tensor file_in |> get_img_size_height |> Float.of_int
+  in
   let img_tensor =
-    read_img_to_tensor_reshape file_in (old_size, old_size)
+    read_img_to_tensor_reshape file_in
+      ( Float.to_int (old_size_w *. 1.0),
+        Float.to_int (old_size_H *. 1.0) )
   in
   (* get the float array array array from the tensor *)
   let img_3d_float = img_tensor |> Tensor.to_float3_exn in
@@ -332,9 +343,16 @@ let demo_gaussian file_in file_out k sigma =
    >0, smooth the image with a gaussian first, and output as file_out.
    Assume k is odd, sigma is float. *)
 let demo_gradient file_in file_out k sigma =
-  let old_size = read_img_to_tensor file_in |> get_img_size in
+  let old_size_w =
+    read_img_to_tensor file_in |> get_img_size_width |> Float.of_int
+  in
+  let old_size_H =
+    read_img_to_tensor file_in |> get_img_size_height |> Float.of_int
+  in
   let img_tensor =
-    read_img_to_tensor_reshape file_in (old_size, old_size)
+    read_img_to_tensor_reshape file_in
+      ( Float.to_int (old_size_w *. 1.0),
+        Float.to_int (old_size_H *. 1.0) )
   in
   (* normalize only works for tensor of 3 channels!!! *)
   let normalized = img_tensor |> normalize in

@@ -57,9 +57,13 @@ let unnormalize tensor =
 let output_tensor tensor = Tensor.to_type tensor ~type_:(T Float)
 let get_shape_str tensor = Tensor.shape_str tensor
 
-let get_img_size tensor =
+let get_img_size_height tensor =
   let lst = get_shape_str tensor |> String.split_on_char ',' in
   List.nth lst 1 |> String.trim |> int_of_string
+
+let get_img_size_width tensor =
+  let lst = get_shape_str tensor |> String.split_on_char ',' in
+  List.nth lst 2 |> String.trim |> int_of_string
 
 let print_shape tensor =
   Stdio.print_endline
