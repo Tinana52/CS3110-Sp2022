@@ -34,7 +34,7 @@ clean:
 	mkdir data/output
 	rm -rf tmp
 
-doc:
+docs:
 	dune build @doc
 
 loc:
