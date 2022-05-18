@@ -43,17 +43,12 @@ let print_shape tensor =
   Stdio.print_endline
     ("The shape of this tensor is: " ^ get_shape_str tensor)
 
-(** load_image_no_resize_and_crop reads the image, store it in a
-    <1,channel,width,hight> tensor; [read_img_to_tensor] gets the
-    <channel,width,hight> tensor, which is the representation for the
-    read image. Note: this doesn't normalize the image!! *)
+
 let read_img_to_tensor (filename : string) : Tensor.t =
   Imagenet.load_image_no_resize_and_crop filename
   |> unnormalize |> Tensor.to_list |> List.hd
 
-(** Basically the same function as in read_img_to_tensor, but allow
-    reshaping into [size] where [size] is (width, height). Note: this
-    doesn't normalize the image!! *)
+
 let read_img_to_tensor_reshape (filename : string) (size : int * int) :
     Tensor.t =
   let load_image filename size =

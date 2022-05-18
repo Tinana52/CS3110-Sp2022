@@ -21,14 +21,14 @@ let get_inputs_tensors
 
 let training_nst
     model
-    input_var
+    generated_img
     optimizer
     style_layers
     content_layers
     total_steps =
   for iteration = 1 to total_steps do
     Optimizer.zero_grad optimizer;
-    let input_layers = model input_var in
+    let input_layers = model generated_img in
     let style_loss =
       get_style_loss input_layers style_layers !flags.layers_style_loss
     in
@@ -42,7 +42,7 @@ let training_nst
     Tensor.backward loss;
     Optimizer.step optimizer;
     Tensor.no_grad (fun () ->
-        ignore (Imagenet.clamp_ input_var : Tensor.t));
+        ignore (Imagenet.clamp_ generated_img : Tensor.t));
     let _ =
       Stdio.printf
         "Iteration: %d,  Combined Loss: %.4f, Style Loss: %.4f, \
@@ -56,7 +56,7 @@ let training_nst
     Caml.Gc.full_major ();
     if iteration mod 5 = 0 then
       let img_idx = iteration / 5 in
-      Imagenet.write_image input_var
+      Imagenet.write_image generated_img
         ~filename:(Printf.sprintf "GIF_tmp/gif%04d.png" img_idx)
   done
 

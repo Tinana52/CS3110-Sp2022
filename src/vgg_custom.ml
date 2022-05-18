@@ -1,10 +1,12 @@
 open Base
 open Torch
 
-(* To allow us to modify the vgg module to enable using more vgg
+(* ############## THIS IS COPIED FROM TORCH SOURCE CODE ##############
+   Warning: This is copied from OCaml-Torch source code, see LOC.txt!!!
+   To allow us to modify the vgg module to enable using more vgg
    pretrained weights, we copied needed source code from vgg.ml in
    torch.vision *)
-(* ################## Begin OF COPY ############################ *)
+
 let relu = Layer.of_fn_ (fun xs ~is_training:_ -> Tensor.relu xs)
 let relu_ = Layer.of_fn_ (fun xs ~is_training:_ -> Tensor.relu_ xs)
 
