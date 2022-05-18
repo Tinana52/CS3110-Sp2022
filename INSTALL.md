@@ -3,11 +3,7 @@ Step 0: update system
 `sudo apt upgrade`
 
 Step 1: install required packages
-If you are on WSL, run this:
 `sudo apt install pkg-config libffi-dev zlib1g-dev imagemagick`
-If you are on a mac, run these: 
-`rpm -Uvh ImageMagick-libs-7.1.0-34.x86_64.rpm`
-`rpm -Uvh ImageMagick-7.1.0-34.x86_64.rpm`
 
 Step 2: install ocaml pytorch
 `opam install torch ANSITerminal`
@@ -16,9 +12,6 @@ Step 3: download the pretrained weights from
 vgg16: https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg16.ot
 vgg19: https://github.com/LaurentMazare/ocaml-torch/releases/download/v0.1-unstable/vgg19.ot
 and save the file in folder `/resources`
-
-Step 4: install imagemagick
-`sudo apt install imagemagick-6.q16`
 
 To run the engine,
 `make launch`
@@ -31,7 +24,7 @@ Pre-trained model can be any vgg models,
 But currently Ocaml Torch only provides `vgg16.ot` and `vgg19.ot` for downloads
 ## For both VGG19 and VGG16, the default flags that work:
 `-layers_style_loss [2,10,14,21,28]`
-`-layers_content_loss [7]`
+`-layers_content_loss [21]`
 `-style_weight 1e6`
 `-learning_rate 1e-1`
 `-total_steps 80`

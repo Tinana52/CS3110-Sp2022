@@ -43,9 +43,9 @@ let picture model_name cmd =
     (get_output cmd)
 
 let picture_resize_512 model_name cmd =
-  let res_cont = tmp_file_loc "resize_style" in
+  let res_cont = tmp_file_loc "resize_content" in
   let flgs = get_all_flags cmd in
-  let res_style = tmp_file_loc "resize_content" in
+  let res_style = tmp_file_loc "resize_style" in
   let gaus_cont = tmp_file_loc "gaussian_content" in
   let grad = tmp_file_loc "gradient" in
   let _ = Sys.command "mkdir tmp" in
@@ -209,6 +209,8 @@ and start () =
         start ())
   | Clean ->
       let _ = Sys.command "rm -rf data/output && mkdir data/output" in
+      remove_GIF_tmp ();
+      remove_tmp ();
       print_endline "Done. ";
       print_string "> ";
       start ()
