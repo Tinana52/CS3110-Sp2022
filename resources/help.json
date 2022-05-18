@@ -3,7 +3,7 @@
     {
       "flag": "style_weight",
       "arg_type": "float",
-      "default": 8e7,
+      "default": 9e5,
       "info": "style weight"
     },
     {
@@ -47,7 +47,7 @@
     {
       "flag": "sigma",
       "arg_type": "float",
-      "default": 1.0,
+      "default": 0.75,
       "info": "sigma"
     },
     {
