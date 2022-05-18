@@ -1,38 +1,12 @@
 open Torch
 open Torch_vision
 
-(* ############## THIS IS COPIED FROM TORCH SOURCE CODE ##############
-   We need these to have normalize and unnormalize working for torch*)
-let imagenet_mean_and_std = function
-  | `red -> (0.485, 0.229)
-  | `green -> (0.456, 0.224)
-  | `blue -> (0.406, 0.225)
-
 let mean_, std_ =
-  [
-    imagenet_mean_and_std `red;
-    imagenet_mean_and_std `green;
-    imagenet_mean_and_std `blue;
-  ]
-  |> Base.List.unzip
+  [ (0.485, 0.229); (0.456, 0.224); (0.406, 0.225) ] |> Base.List.unzip
 
-let clamp_ =
-  let normalize kind x =
-    let mean, std = imagenet_mean_and_std kind in
-    (x -. mean) /. std
-  in
-  let min_max kind = (normalize kind 0., normalize kind 1.) in
-  fun tensor ->
-    let clamp_ kind index =
-      let min, max = min_max kind in
-      Tensor.narrow tensor ~dim:1 ~start:index ~length:1
-      |> Tensor.clamp ~min:(Scalar.float min) ~max:(Scalar.float max)
-      |> fun (_ : Tensor.t) -> ()
-    in
-    clamp_ `red 0;
-    clamp_ `green 1;
-    clamp_ `blue 2;
-    tensor
+(* ############## THIS IS COPIED FROM TORCH SOURCE CODE ##############
+   Warning: This is copied from OCaml-Torch source code, see LOC.txt!!!
+   We need these to have normalize and unnormalize working for torch*)
 
 let mean_ =
   lazy (Tensor.float_vec mean_ |> Tensor.view ~size:[ 3; 1; 1 ])
